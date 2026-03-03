@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Gurukul Classes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: #F1F5F9;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .dash-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dash-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .dash-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dash-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--text-main);
+        }
+
+        .dash-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .dash-card a {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .dash-card a:hover {
+            opacity: 0.85;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary), #6366f1);
+            color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .welcome-banner h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .welcome-banner p {
+            opacity: 0.85;
+        }
+
+        .welcome-banner .logout-btn {
+            padding: 0.6rem 1.4rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .welcome-banner .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .info-strip {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.25rem 1.75rem;
+            margin-top: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .info-strip .item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .info-strip .item span {
+            font-size: 1.2rem;
+        }
+
+        #authGuard {
+            position: fixed;
+            inset: 0;
+            background: #F1F5F9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            gap: 1rem;
+        }
+
+        #authGuard p {
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Guard: shown if not logged in -->
+    <div id="authGuard" style="display:none;">
+        <p style="font-size:3rem;">🔒</p>
+        <p>You must be logged in to view this page.</p>
+        <a href="Student_Login.html" class="btn-primary">Go to Login</a>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-link">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="logo-img">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+                <div class="logo-text">
+                    <h1>Gurukul Classes</h1>
+                    <p>Student Dashboard</p>
+                </div>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="Admission_Inquiry.html">Inquiries</a></li>
+                    <li><button class="btn-outline" onclick="logout()" style="cursor:pointer;">Logout</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 2rem; padding-bottom: 3rem;">
+
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <div>
+                <h2>Welcome back, <span id="studentName">Student</span>! 👋</h2>
+                <p>Here's your Gurukul Classes student portal. Explore what's available below.</p>
+            </div>
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+
+        <!-- Info Strip -->
+        <div class="info-strip">
+            <div class="item"><span>📧</span> <span id="studentEmail">—</span></div>
+            <div class="item"><span>🏫</span> Gurukul Classes, Ahmedabad</div>
+            <div class="item"><span>📅</span> Admissions Open 2026–2027</div>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard-grid">
+            <div class="dash-card">
+                <div class="icon">📋</div>
+                <h3>Admission Inquiry</h3>
+                <p>Submit a new inquiry for yourself or a family member to enquire about classes, fees, and schedule.
+                </p>
+                <a href="Admission_Inquiry.html">Submit Inquiry</a>
+            </div>
+
+            <div class="dash-card">
+                <div class="icon">📚</div>
+                <h3>Courses Offered</h3>
+                <p>We offer coaching for Grade 1–12 (Gujarat Board / NCERT), and specialized JEE & NEET preparation.</p>
+                <a href="About_Us.html">Learn More</a>
+            </div>
+
+            <div class="dash-card">
+                <div class="icon">📈</div>
+                <h3>Performance Tracking</h3>
+                <p>Regular weekly tests and detailed performance analysis to track your growth and ensure improvements.
+                </p>
+                <a href="Admission_Inquiry.html">Contact Faculty</a>
+            </div>
+
+            <div class="dash-card">
+                <div class="icon">📞</div>
+                <h3>Contact Us</h3>
+                <p>Have questions? Reach out to us via email or visit our social media pages for updates.</p>
+                <a href="mailto:info@gurukulclasses.com">Email Us</a>
+            </div>
+
+            <div class="dash-card">
+                <div class="icon">📖</div>
+                <h3>About Gurukul</h3>
+                <p>Learn about our teaching philosophy, faculty, and how we help students achieve academic excellence.
+                </p>
+                <a href="About_Us.html">About Us</a>
+            </div>
+
+            <div class="dash-card">
+                <div class="icon">🔍</div>
+                <h3>AI Assistant</h3>
+                <p>Have a question about courses, JEE, NEET, or admissions? Try our AI assistant on the homepage.</p>
+                <a href="index.html">Ask AI</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-bottom" style="margin-top: 0; padding-top: 1rem;">
+            <p>Copyright &copy; 2026 Gurukul Classes | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if student is logged in
+        const loggedIn = sessionStorage.getItem('student_logged_in');
+        if (loggedIn !== 'true') {
+            document.getElementById('authGuard').style.display = 'flex';
+            document.querySelector('header').style.display = 'none';
+            document.querySelector('main').style.display = 'none';
+            document.querySelector('footer').style.display = 'none';
+        } else {
+            document.getElementById('studentName').textContent = sessionStorage.getItem('student_name') || 'Student';
+            document.getElementById('studentEmail').textContent = sessionStorage.getItem('student_email') || '—';
+        }
+
+        function logout() {
+            sessionStorage.removeItem('student_logged_in');
+            sessionStorage.removeItem('student_name');
+            sessionStorage.removeItem('student_email');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>

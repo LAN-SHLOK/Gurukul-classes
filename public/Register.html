@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Portal | Gurukul Classes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-link">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="logo-img">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+                <div class="logo-text">
+                    <h1>Gurukul Classes</h1>
+                    <p>Excellence in Education</p>
+                </div>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="About_Us.html">About Us</a></li>
+                    <li><a href="Admission_Inquiry.html">Admissions</a></li>
+                    <li><a href="Student_Login.html" class="btn-outline">Login</a></li>
+                    <li><a href="Register.html" class="btn-primary">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" style="padding: 3rem 1.5rem 1rem; background: var(--background);">
+            <div class="hero-content">
+                <h2>Register for Gurukul Classes</h2>
+                <p>Create an account to access schedules, track growth, and participate in our offline classes.</p>
+            </div>
+        </section>
+
+        <div class="container" style="padding-top: 2rem;">
+            <div class="form-container">
+                <form action="/api/register" method="POST">
+
+                    <!-- Google Register / Login Button -->
+                    <div id="g_id_onload"
+                        data-client_id="352499514518-erpqc2d8ruuq0h3n34n8p3qr8kbba2dk.apps.googleusercontent.com"
+                        data-callback="handleGoogleLogin" data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
+                        data-text="signup_with" data-shape="rectangular" data-logo_alignment="left" data-width="100%">
+                    </div>
+
+                    <div
+                        style="display:flex; align-items:center; gap:1rem; margin: 1.25rem 0; color:var(--text-muted); font-size:0.9rem;">
+                        <hr style="flex:1; border:none; border-top:1px solid #E2E8F0;">
+                        <span>or register with email</span>
+                        <hr style="flex:1; border:none; border-top:1px solid #E2E8F0;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="first-name">First Name</label>
+                        <input type="text" class="form-control" id="first-name" name="first-name" placeholder="John"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="last-name">Last Name</label>
+                        <input type="text" class="form-control" id="last-name" name="last-name" placeholder="Doe"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="mobile">Mobile Number</label>
+                        <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="+91 XXXXXXXXXX"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            placeholder="john.doe@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="gender">Gender</label>
+                        <select class="form-control" name="gender" id="gender" required>
+                            <option value="">-- Select Gender --</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                            <option value="prefer_not_to_say">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Create a strong password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirm-password">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm-password" name="confirm-password"
+                            placeholder="Confirm your password" required>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 2rem;">
+                        <input type="checkbox" id="terms" name="terms" required
+                            style="width: 18px; height: 18px; accent-color: var(--primary);">
+                        <label for="terms" style="margin: 0; font-size: 0.95rem; color: var(--text-muted);">
+                            I agree to the <a href="term.html" target="_blank"
+                                style="color: var(--primary); font-weight: 500;">Terms and Conditions</a>.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary form-submit">Register Account</button>
+
+                    <div class="form-footer">
+                        Already have an account? <a href="Student_Login.html" style="font-weight: 600;">Log in here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-bottom" style="margin-top: 0; padding-top: 1rem;">
+            <p>Copyright &copy; 2026 Gurukul Classes | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        async function handleGoogleLogin(response) {
+            try {
+                const res = await fetch('/api/auth/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ credential: response.credential })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    sessionStorage.setItem('student_name', data.name);
+                    sessionStorage.setItem('student_email', data.email);
+                    sessionStorage.setItem('student_logged_in', 'true');
+                    window.location.href = '/Dashboard.html';
+                } else {
+                    alert(data.error || 'Google sign-in failed.');
+                }
+            } catch (e) {
+                alert('Google sign-in error. Please try again.');
+            }
+        }
+    </script>
+</body>
+
+</html>

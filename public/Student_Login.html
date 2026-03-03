@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Portal | Gurukul Classes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-link">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="logo-img">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+                <div class="logo-text">
+                    <h1>Gurukul Classes</h1>
+                    <p>Excellence in Education</p>
+                </div>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="About_Us.html">About Us</a></li>
+                    <li><a href="Admission_Inquiry.html">Admissions</a></li>
+                    <li><a href="Student_Login.html" class="active">Login</a></li>
+                    <li><a href="Register.html" class="btn-primary">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" style="padding: 3rem 1.5rem 1rem; background: var(--background);">
+            <div class="hero-content">
+                <h2>Student Login</h2>
+                <p>Welcome back! Please login to access your dashboard.</p>
+            </div>
+        </section>
+
+        <div class="container" style="padding-top: 2rem;">
+            <div class="form-container" style="max-width: 450px;">
+                <form action="/api/login" method="POST" id="loginForm">
+
+                    <!-- Google Login Button -->
+                    <div id="g_id_onload"
+                        data-client_id="352499514518-erpqc2d8ruuq0h3n34n8p3qr8kbba2dk.apps.googleusercontent.com"
+                        data-callback="handleGoogleLogin" data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
+                        data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left" data-width="100%">
+                    </div>
+
+                    <div
+                        style="display:flex; align-items:center; gap:1rem; margin: 1.25rem 0; color:var(--text-muted); font-size:0.9rem;">
+                        <hr style="flex:1; border:none; border-top:1px solid #E2E8F0;">
+                        <span>or sign in with email</span>
+                        <hr style="flex:1; border:none; border-top:1px solid #E2E8F0;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <label class="form-label" for="password" style="margin-bottom: 0;">Password</label>
+                            <a href="passlost.html" style="font-size: 0.85rem; font-weight: 500;">Lost your
+                                password?</a>
+                        </div>
+                        <input type="password" class="form-control" name="password" id="password"
+                            placeholder="Enter your password" required>
+                    </div>
+
+                    <div class="form-group"
+                        style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem;">
+                        <input type="checkbox" name="recognized" id="recognized" required
+                            style="width: 18px; height: 18px; accent-color: var(--primary);">
+                        <label for="recognized"
+                            style="margin: 0; font-size: 0.95rem; color: var(--text-main); font-weight: 500;">Verify
+                            Login Details</label>
+                    </div>
+
+                    <button name="Login" type="submit" class="btn-primary form-submit">Log In to Dashboard</button>
+
+                    <div class="form-footer">
+                        Don't have an account yet? <a href="Register.html" style="font-weight: 600;">Register now</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-bottom" style="margin-top: 0; padding-top: 1rem;">
+            <p>Copyright &copy; 2026 Gurukul Classes | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            const checkbox = document.getElementById("recognized");
+            if (!checkbox.checked) {
+                e.preventDefault();
+                alert("Please verify your login details before continuing.");
+            }
+        });
+
+        // Google Login Callback
+        async function handleGoogleLogin(response) {
+            try {
+                const res = await fetch('/api/auth/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ credential: response.credential })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    sessionStorage.setItem('student_name', data.name);
+                    sessionStorage.setItem('student_email', data.email);
+                    sessionStorage.setItem('student_logged_in', 'true');
+                    window.location.href = '/Dashboard.html';
+                } else {
+                    alert(data.error || 'Google sign-in failed.');
+                }
+            } catch (e) {
+                alert('Google sign-in error. Please try again.');
+            }
+        }
+    </script>
+</body>
+
+</html>
