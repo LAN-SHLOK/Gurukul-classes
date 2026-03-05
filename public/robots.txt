@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin.html
 Disallow: /Dashboard.html
 
-Sitemap: https://https://gurukul-classes-kappa.vercel.app//sitemap.xml
+Sitemap: https://gurukul-classes-kappa.vercel.app/sitemap.xml
