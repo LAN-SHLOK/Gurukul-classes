@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /Dashboard.html
+
+Sitemap: https://gurukul-classes-52vj.onrender.com/sitemap.xml
