@@ -69,9 +69,29 @@ async function handleSearch(event) {
     }
 }
 
-// Close answer card
-function closeAiCard() {
-    document.getElementById('aiAnswerCard').style.display = 'none';
+// ── Mobile Sidebar Logic ───────────────────────────────────
+function toggleMobileMenu() {
+    const sidebar = document.getElementById('mobileSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const toggleBtn = document.querySelector('.menu-toggle');
+
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+
+    // Optional: Transform hamburger icon if you add classes
 }
+
+// Close sidebar on link click or overlay click
+document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('sidebarOverlay');
+    if (overlay) {
+        overlay.addEventListener('click', toggleMobileMenu);
+    }
+
+    const mobileLinks = document.querySelectorAll('.mobile-nav-links a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', toggleMobileMenu);
+    });
+});
 
 console.log('Gurukul Classes script loaded.');

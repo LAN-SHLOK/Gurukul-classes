@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify & Reset Password | Gurukul Classes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .code-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .code-inputs input {
+            width: 50px;
+            height: 55px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: monospace;
+        }
+
+        .code-inputs input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.1);
+        }
+
+        .status-msg {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .status-msg.error {
+            display: block;
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .status-msg.success {
+            display: block;
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .timer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .password-rules {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-link">
+                <img src="images/logo.png" alt="Gurukul Logo" class="logo-img"
+                    style="width: 50px; height: 50px; object-fit: contain; margin-right: 12px;">
+                <div class="logo-text">
+                    <h1>Gurukul Classes</h1>
+                    <p>Excellence in Education</p>
+                </div>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="Student_Login.html">Login</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" style="padding: 3rem 1.5rem 1rem; background: var(--background);">
+            <div class="hero-content">
+                <h2 id="stepTitle">Enter Verification Code</h2>
+                <p id="stepDesc">We've sent a 6-digit code to your email. Enter it below.</p>
+            </div>
+        </section>
+
+        <div class="container" style="padding-top: 2rem;">
+            <div class="form-container" style="max-width: 450px;">
+
+                <!-- STEP 1: Enter Code -->
+                <div id="step1" class="step active">
+                    <p style="text-align: center; color: var(--text-muted); margin-bottom: 1rem;">
+                        Code sent to: <b id="emailDisplay"></b>
+                    </p>
+                    <div class="code-inputs" id="codeInputs">
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autofocus>
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                    </div>
+                    <div class="timer" id="timer">Code expires in <span id="countdown">10:00</span></div>
+                    <button onclick="verifyCode()" class="btn-primary form-submit" id="verifyBtn">Verify Code</button>
+                    <div id="codeMsg" class="status-msg"></div>
+                    <div class="form-footer">
+                        Didn't receive the code? <a href="passlost.html" style="font-weight: 600;">Resend</a>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Set New Password -->
+                <div id="step2" class="step">
+                    <div class="form-group">
+                        <label class="form-label" for="newPassword">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" placeholder="Enter new password"
+                            required minlength="6">
+                        <p class="password-rules">Must be at least 6 characters long.</p>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label class="form-label" for="confirmPassword">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword"
+                            placeholder="Confirm new password" required>
+                    </div>
+                    <button onclick="setNewPassword()" class="btn-primary form-submit" style="margin-top: 1rem;"
+                        id="resetBtn">Reset Password</button>
+                    <div id="passMsg" class="status-msg"></div>
+                </div>
+
+                <!-- STEP 3: Success -->
+                <div id="step3" class="step">
+                    <div class="success-icon">✅</div>
+                    <p style="text-align: center; font-size: 1.1rem; font-weight: 600;">Password Changed Successfully!
+                    </p>
+                    <p style="text-align: center; color: var(--text-muted);">You can now log in with your new password.
+                    </p>
+                    <a href="Student_Login.html" class="btn-primary form-submit"
+                        style="display: block; text-align: center; margin-top: 1.5rem; text-decoration: none;">Go to
+                        Login</a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-bottom" style="margin-top: 0; padding-top: 1rem;">
+            <p>Copyright &copy; 2026 Gurukul Classes | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="mobile-sidebar" id="mobileSidebar">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+            <h2 style="margin:0;">Menu</h2>
+            <button onclick="toggleMobileMenu()"
+                style="background:none; border:none; font-size:1.5rem; cursor:pointer;">✕</button>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Student_Login.html">Student Login</a></li>
+            <li><a href="Register.html">Register</a></li>
+        </ul>
+    </aside>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Get email from URL
+        const params = new URLSearchParams(window.location.search);
+        const email = params.get('email') || '';
+        let verifiedCode = '';
+
+        document.getElementById('emailDisplay').textContent = email;
+
+        // Auto-focus and auto-advance code inputs
+        const inputs = document.querySelectorAll('.code-inputs input');
+        inputs.forEach((input, i) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value && i < inputs.length - 1) {
+                    inputs[i + 1].focus();
+                }
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && i > 0) {
+                    inputs[i - 1].focus();
+                }
+            });
+            // Allow paste of full code
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+                pasted.split('').forEach((char, idx) => {
+                    if (inputs[idx]) inputs[idx].value = char;
+                });
+                if (inputs[pasted.length - 1]) inputs[pasted.length - 1].focus();
+            });
+        });
+
+        // Countdown timer (10 minutes)
+        let timeLeft = 600;
+        const countdownEl = document.getElementById('countdown');
+        const timerInterval = setInterval(() => {
+            timeLeft--;
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            countdownEl.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                countdownEl.textContent = 'Expired';
+                document.getElementById('codeMsg').className = 'status-msg error';
+                document.getElementById('codeMsg').textContent = 'Code expired. Please request a new one.';
+            }
+        }, 1000);
+
+        // Step 1: Verify the code
+        async function verifyCode() {
+            const code = Array.from(inputs).map(i => i.value).join('');
+            if (code.length !== 6) {
+                document.getElementById('codeMsg').className = 'status-msg error';
+                document.getElementById('codeMsg').textContent = 'Please enter the full 6-digit code.';
+                return;
+            }
+
+            document.getElementById('verifyBtn').disabled = true;
+            document.getElementById('verifyBtn').textContent = 'Verifying...';
+
+            try {
+                const res = await fetch('/verify-reset-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    verifiedCode = code;
+                    document.getElementById('step1').classList.remove('active');
+                    document.getElementById('step2').classList.add('active');
+                    document.getElementById('stepTitle').textContent = 'Set New Password';
+                    document.getElementById('stepDesc').textContent = 'Code verified! Now choose your new password.';
+                    clearInterval(timerInterval);
+                } else {
+                    document.getElementById('codeMsg').className = 'status-msg error';
+                    document.getElementById('codeMsg').textContent = data.message;
+                    document.getElementById('verifyBtn').disabled = false;
+                    document.getElementById('verifyBtn').textContent = 'Verify Code';
+                }
+            } catch (err) {
+                document.getElementById('codeMsg').className = 'status-msg error';
+                document.getElementById('codeMsg').textContent = 'Network error. Please try again.';
+                document.getElementById('verifyBtn').disabled = false;
+                document.getElementById('verifyBtn').textContent = 'Verify Code';
+            }
+        }
+
+        // Step 2: Set new password
+        async function setNewPassword() {
+            const password = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+
+            if (password.length < 6) {
+                document.getElementById('passMsg').className = 'status-msg error';
+                document.getElementById('passMsg').textContent = 'Password must be at least 6 characters.';
+                return;
+            }
+            if (password !== confirm) {
+                document.getElementById('passMsg').className = 'status-msg error';
+                document.getElementById('passMsg').textContent = 'Passwords do not match.';
+                return;
+            }
+
+            document.getElementById('resetBtn').disabled = true;
+            document.getElementById('resetBtn').textContent = 'Saving...';
+
+            try {
+                const res = await fetch('/set-new-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code: verifiedCode, password })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    document.getElementById('step2').classList.remove('active');
+                    document.getElementById('step3').classList.add('active');
+                    document.getElementById('stepTitle').textContent = 'Password Reset Complete';
+                    document.getElementById('stepDesc').textContent = '';
+                } else {
+                    document.getElementById('passMsg').className = 'status-msg error';
+                    document.getElementById('passMsg').textContent = data.message;
+                    document.getElementById('resetBtn').disabled = false;
+                    document.getElementById('resetBtn').textContent = 'Reset Password';
+                }
+            } catch (err) {
+                document.getElementById('passMsg').className = 'status-msg error';
+                document.getElementById('passMsg').textContent = 'Network error. Please try again.';
+                document.getElementById('resetBtn').disabled = false;
+                document.getElementById('resetBtn').textContent = 'Reset Password';
+            }
+        }
+    </script>
+</body>
+
+</html>

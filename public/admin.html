@@ -209,6 +209,61 @@
             text-align: center;
             color: var(--text-muted);
         }
+
+        /* ── Mobile Responsiveness ── */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+
+            header .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .logo-link {
+                justify-content: center;
+            }
+
+            nav ul {
+                justify-content: center;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 1.5rem;
+            }
+
+            .dashboard-actions {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+
+            .dashboard-actions input {
+                min-width: 0 !important;
+                width: 100%;
+            }
+
+            .tab-container {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .tab-btn {
+                white-space: nowrap;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 
@@ -232,11 +287,8 @@
         <header>
             <div class="header-container">
                 <a href="index.html" class="logo-link">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" class="logo-img">
-                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
-                    </svg>
+                    <img src="images/logo.png" alt="Gurukul Logo" class="logo-img"
+                        style="width: 50px; height: 50px; object-fit: contain; margin-right: 12px;">
                     <div class="logo-text">
                         <h1>Gurukul Admin</h1>
                         <p>Database Tracking</p>
@@ -253,19 +305,23 @@
         </header>
 
         <main class="dashboard-container">
-            <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div class="dashboard-header"
+                style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end;">
                 <div>
                     <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Database Dashboard</h2>
                     <p style="color: var(--text-muted);">Track and manage all submitted data from clients and students.
                     </p>
                 </div>
-                <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="dashboard-actions" style="display: flex; gap: 1rem; align-items: center;">
                     <input type="text" id="searchInput" onkeyup="searchData()"
                         placeholder="Search names, email, mobile..."
                         style="padding: 0.5rem 1rem; border: 1px solid #E2E8F0; border-radius: 4px; font-size: 0.95rem; min-width: 250px;">
-                    <button onclick="exportCSV()" class="btn-outline"
-                        style="border-color: #10B981; color: #10B981;">Export CSV 📥</button>
-                    <button onclick="fetchData()" class="btn-outline">Refresh 🔄</button>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button onclick="exportCSV()" class="btn-outline"
+                            style="border-color: #10B981; color: #10B981; padding: 0.5rem 0.8rem;">CSV 📥</button>
+                        <button onclick="fetchData()" class="btn-outline" style="padding: 0.5rem 0.8rem;">Refresh
+                            🔄</button>
+                    </div>
                 </div>
             </div>
 
@@ -286,11 +342,12 @@
                                 <th>Email</th>
                                 <th>Class</th>
                                 <th>Message</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="inquiries-body">
                             <tr>
-                                <td colspan="6" class="empty-state">Loading data...</td>
+                                <td colspan="7" class="empty-state">Loading data...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -309,11 +366,12 @@
                                 <th>Mobile</th>
                                 <th>Email</th>
                                 <th>Gender</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="students-body">
                             <tr>
-                                <td colspan="6" class="empty-state">Loading data...</td>
+                                <td colspan="7" class="empty-state">Loading data...</td>
                             </tr>
                         </tbody>
                     </table>
