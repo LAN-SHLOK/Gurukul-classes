@@ -82,18 +82,18 @@ export default function LoadingScreen() {
               key={i}
               className="absolute w-1 h-1 bg-[#2D31FA] rounded-full"
               initial={{
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
+                x: (i * 97) % 1200,
+                y: (i * 53) % 800,
                 opacity: 0,
               }}
               animate={{
-                y: [null, Math.random() * -200 - 100],
+                y: [null, -200 - (i * 10)],
                 opacity: [0, 0.8, 0],
               }}
               transition={{
-                duration: Math.random() * 2 + 2,
+                duration: 2 + (i % 3),
                 repeat: Infinity,
-                delay: Math.random() * 2,
+                delay: (i % 5) * 0.4,
                 ease: "easeOut",
               }}
             />
