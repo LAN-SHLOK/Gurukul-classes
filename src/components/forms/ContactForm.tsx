@@ -140,7 +140,7 @@ export default function ContactForm() {
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 className={cn(
-                  "w-full h-40 bg-black/40 border border-white/5 rounded-2xl p-6 text-white text-sm outline-none focus:border-[#2D31FA]/50 transition-all font-medium resize-none",
+                  "w-full h-40 bg-black/40 border border-white/5 rounded-2xl p-6 text-white placeholder:text-white/30 text-sm outline-none focus:border-[#2D31FA]/50 transition-all font-medium resize-none",
                   errors.message && "ring-2 ring-red-400"
                 )}
               />

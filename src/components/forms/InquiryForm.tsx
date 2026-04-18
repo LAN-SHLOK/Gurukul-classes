@@ -134,7 +134,7 @@ export default function InquiryForm() {
                   placeholder="First Name"
                   value={form.firstName}
                   onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-                  className={cn("bg-gray-50 border-none rounded-2xl py-6", errors.firstName && "ring-2 ring-red-400")}
+                  className={cn("bg-gray-50 border-none rounded-2xl py-6 text-gray-900 placeholder:text-gray-400", errors.firstName && "ring-2 ring-red-400")}
                 />
                 {errors.firstName && <p className="text-xs text-red-500 font-bold ml-2">{errors.firstName}</p>}
               </div>
@@ -143,7 +143,7 @@ export default function InquiryForm() {
                   placeholder="Last Name"
                   value={form.lastName}
                   onChange={(e) => setForm({ ...form, lastName: e.target.value })}
-                  className={cn("bg-gray-50 border-none rounded-2xl py-6", errors.lastName && "ring-2 ring-red-400")}
+                  className={cn("bg-gray-50 border-none rounded-2xl py-6 text-gray-900 placeholder:text-gray-400", errors.lastName && "ring-2 ring-red-400")}
                 />
                 {errors.lastName && <p className="text-xs text-red-500 font-bold ml-2">{errors.lastName}</p>}
               </div>
@@ -154,7 +154,7 @@ export default function InquiryForm() {
                 type="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className={cn("bg-gray-50 border-none rounded-2xl py-6", errors.email && "ring-2 ring-red-400")}
+                className={cn("bg-gray-50 border-none rounded-2xl py-6 text-gray-900 placeholder:text-gray-400", errors.email && "ring-2 ring-red-400")}
               />
               {errors.email && <p className="text-xs text-red-500 font-bold ml-2">{errors.email}</p>}
             </div>
@@ -190,7 +190,7 @@ export default function InquiryForm() {
               placeholder="Any specific questions or requirements..."
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="w-full h-32 bg-gray-50 border-none rounded-[24px] p-6 text-sm font-medium outline-none focus:ring-2 focus:ring-[#2D31FA]/30 transition-all resize-none"
+              className="w-full h-32 bg-gray-50 border-none rounded-[24px] p-6 text-sm font-medium text-gray-900 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#2D31FA]/30 transition-all resize-none"
             />
           </div>
 
