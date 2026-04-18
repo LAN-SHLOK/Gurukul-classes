@@ -1,0 +1,436 @@
+@import "tailwindcss";
+
+@theme {
+  --font-heading: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-sans: "Inter", sans-serif;
+
+  --color-accent: #2D31FA; /* Electric Cobalt */
+  --color-foreground: #000000;
+  --color-background: #F2F2F2; /* Dizayn Off-White */
+  
+  --radius-pill: 9999px;
+  --radius-bento: 40px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply text-foreground antialiased selection:bg-accent selection:text-white;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tighter;
+  }
+}
+
+@layer components {
+  .section-dark {
+    @apply bg-black text-white;
+  }
+  
+  .section-light {
+    @apply bg-[#F2F2F2] text-black;
+  }
+
+  .pill {
+    @apply rounded-[9999px];
+  }
+
+  .bento-card {
+    @apply rounded-[40px] border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden transition-all duration-500 hover:scale-[1.01] hover:border-white/20;
+  }
+
+  .magnetic-button {
+    @apply relative flex items-center justify-center transition-transform duration-200 ease-out;
+  }
+}
+
+/* Custom Scrollbar Noir Edition */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded-full hover:bg-accent transition-colors;
+}
+
+/* Animations */
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-reveal {
+  animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Scroll progress bar ──────────────────────────────────────── */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #2D31FA, #818cf8);
+  z-index: 9999;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.1s linear;
+}
+
+/* ── Section dot nav (right side) ─────────────────────────────── */
+.section-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.25);
+  transition: background 0.3s, height 0.3s, border-radius 0.3s;
+}
+.section-dot.active {
+  background: #2D31FA;
+  height: 20px;
+  border-radius: 3px;
+}
+
+/* ── Glassmorphism ────────────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.glass-dark {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.glass-blue {
+  background: rgba(45, 49, 250, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(45, 49, 250, 0.2);
+}
+
+/* ── Neumorphism (light surfaces) ─────────────────────────────── */
+.neuro-light {
+  background: #f0eee8;
+  box-shadow:
+    6px 6px 12px rgba(0,0,0,0.12),
+    -6px -6px 12px rgba(255,255,255,0.9);
+}
+.neuro-light-inset {
+  background: #f0eee8;
+  box-shadow:
+    inset 4px 4px 8px rgba(0,0,0,0.1),
+    inset -4px -4px 8px rgba(255,255,255,0.8);
+}
+.neuro-dark {
+  background: #0f0f0f;
+  box-shadow:
+    5px 5px 10px rgba(0,0,0,0.5),
+    -5px -5px 10px rgba(255,255,255,0.03);
+}
+
+/* ── Microinteractions ────────────────────────────────────────── */
+/* Ripple on click */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+.ripple::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.25) 0%, transparent 60%);
+  opacity: 0;
+  transform: scale(0);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.ripple:active::after {
+  opacity: 1;
+  transform: scale(2.5);
+  transition: none;
+}
+
+/* Input glow focus */
+.input-glow:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(45,49,250,0.3), 0 0 20px -4px rgba(45,49,250,0.2);
+}
+
+/* Link underline slide */
+.link-slide {
+  position: relative;
+}
+.link-slide::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #2D31FA;
+  transition: width 0.3s ease;
+}
+.link-slide:hover::after { width: 100%; }
+
+/* ── MOBILE SCROLLYTELLING ─────────────────────────────────────── */
+@keyframes scroll-reveal-up {
+  from { opacity: 0; transform: translateY(40px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+@keyframes scroll-reveal-left {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0);     }
+  50%       { transform: translateY(-10px); }
+}
+.mob-reveal {
+  animation: scroll-reveal-up 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.mob-reveal-left {
+  animation: scroll-reveal-left 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.float-anim { animation: float-y 4s ease-in-out infinite; }
+
+/* ── EXPRESSIVE TYPOGRAPHY ─────────────────────────────────────── */
+@keyframes text-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+.gradient-text {
+  background: linear-gradient(90deg, #fff 0%, #2D31FA 40%, #818cf8 60%, #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shimmer 4s linear infinite;
+}
+@keyframes word-pop {
+  0%   { opacity: 0; transform: scale(0.7) rotate(-4deg); }
+  60%  { transform: scale(1.08) rotate(1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+.word-pop { animation: word-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+/* ── REAL-TIME COLLABORATIVE INDICATOR ─────────────────────────── */
+@keyframes collab-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(45,49,250,0.5); }
+  70%  { box-shadow: 0 0 0 12px rgba(45,49,250,0); }
+  100% { box-shadow: 0 0 0 0  rgba(45,49,250,0);  }
+}
+.collab-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #2D31FA;
+  animation: collab-ring 1.8s ease-out infinite;
+}
+@keyframes typing-bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40%           { transform: translateY(-6px); }
+}
+.typing-dot { animation: typing-bounce 1.4s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* ── ISOMETRIC LOADING / 404 ────────────────────────────────────── */
+@keyframes iso-rise {
+  from { opacity: 0; transform: rotateX(30deg) rotateZ(-45deg) translateY(40px); }
+  to   { opacity: 1; transform: rotateX(30deg) rotateZ(-45deg) translateY(0);    }
+}
+@keyframes iso-pulse {
+  0%, 100% { filter: brightness(1); }
+  50%       { filter: brightness(1.4) drop-shadow(0 0 8px #2D31FA); }
+}
+.iso-block { animation: iso-rise 0.6s cubic-bezier(0.16,1,0.3,1) forwards, iso-pulse 3s ease-in-out infinite 0.6s; }
+@keyframes iso-loader-spin {
+  0%   { transform: rotateX(30deg) rotateZ(-45deg) rotateY(0deg);   }
+  100% { transform: rotateX(30deg) rotateZ(-45deg) rotateY(360deg); }
+}
+.iso-spinner { animation: iso-loader-spin 1.2s linear infinite; }
+
+/* ── MICROINTERACTIONS ──────────────────────────────────────────── */
+@keyframes press-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.93); }
+  70%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+.press:active { animation: press-pop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-4px); }
+  40%     { transform: translateX(4px); }
+  60%     { transform: translateX(-3px); }
+  80%     { transform: translateX(3px); }
+}
+.shake { animation: shake 0.4s ease-in-out; }
+/* Magnetic hover glow */
+.micro-glow {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.micro-glow:hover {
+  box-shadow: 0 0 24px -4px rgba(45,49,250,0.5);
+  transform: translateY(-2px);
+}
+
+/* ── NEUMORPHIC MOBILE ──────────────────────────────────────────── */
+.neuro-card-dark {
+  background: #111118;
+  box-shadow:
+    6px 6px 16px rgba(0,0,0,0.7),
+    -4px -4px 12px rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.neuro-btn {
+  background: #111118;
+  box-shadow:
+    4px 4px 10px rgba(0,0,0,0.6),
+    -2px -2px 6px rgba(255,255,255,0.04);
+}
+.neuro-btn:active {
+  box-shadow:
+    inset 3px 3px 8px rgba(0,0,0,0.6),
+    inset -2px -2px 5px rgba(255,255,255,0.03);
+}
+
+/* ── GLASSMORPHIC MOBILE ────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.glass-pill {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.glass-strong {
+  background: rgba(45,49,250,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(45,49,250,0.18);
+}
+
+/* ── MOBILE BOTTOM NAV PILL ─────────────────────────────────────── */
+@keyframes nav-item-in {
+  from { opacity: 0; transform: scale(0.6) translateY(8px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0);   }
+}
+.nav-item-in { animation: nav-item-in 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+@keyframes active-blob {
+  0%, 100% { border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; }
+  25%       { border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%; }
+  50%       { border-radius: 40% 60% 45% 55% / 55% 45% 60% 40%; }
+  75%       { border-radius: 55% 45% 60% 40% / 40% 60% 45% 55%; }
+}
+.active-blob { animation: active-blob 4s ease-in-out infinite; }
+
+
+/* ── Expressive typography ────────────────────────────────────── */
+.char-reveal {
+  display: inline-block;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.5s ease;
+}
+.char-reveal.revealed { clip-path: inset(0 0% 0 0); }
+
+/* ── Real-time presence indicator ────────────────────────────── */
+.presence-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34,197,94,0.4);
+  animation: pulse-green 2s infinite;
+}
+@keyframes pulse-green {
+  0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+  70%  { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+  100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+}
+
+/* ── Isometric helpers ────────────────────────────────────────── */
+.iso-scene { perspective: 800px; transform-style: preserve-3d; }
+.iso-grid  { transform: rotateX(30deg) rotateZ(-45deg); transform-style: preserve-3d; }
+
+/* ── Shimmer skeleton ─────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+}
+
+/* ── Dark Select Dropdowns ────────────────────────────────────── */
+select {
+  color-scheme: dark;
+}
+
+select option {
+  background-color: #0f0f14;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color: #ffffff;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+select option:hover,
+select option:focus {
+  background-color: #2D31FA;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  color: #ffffff;
+  outline: none;
+}
+
+select option:checked {
+  background-color: #2D31FA;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
+  color: #ffffff;
+  font-weight: 700;
+}
+
+select option:disabled {
+  color: rgba(255,255,255,0.3);
+  background-color: rgba(255,255,255,0.02);
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+/* Webkit scrollbar for select dropdown */
+select::-webkit-scrollbar {
+  width: 8px;
+}
+
+select::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+}
+
+select::-webkit-scrollbar-thumb {
+  background: #2D31FA;
+  border-radius: 4px;
+}
+
+select::-webkit-scrollbar-thumb:hover {
+  background: #4548ff;
+}
+

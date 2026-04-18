@@ -1,0 +1,17 @@
+{
+  "name": "Gurukul Classes",
+  "short_name": "Gurukul",
+  "description": "Premium offline coaching in Ahmedabad for Grade 1–12, JEE & NEET",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#2D31FA",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "screenshots": [],
+  "categories": ["education"],
+  "lang": "en-IN"
+}
