@@ -65,7 +65,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${plusJakarta.variable} antialiased selection:bg-[#2D31FA] selection:text-white`}>
+      <body className={`${inter.variable} ${plusJakarta.variable} antialiased selection:bg-[#2D31FA] selection:text-white bg-black text-white min-h-screen`}>
         <SessionProvider>
           <SmoothScrollProvider>
             <LoadingScreen />
