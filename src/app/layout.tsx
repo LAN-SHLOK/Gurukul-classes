@@ -55,6 +55,9 @@ export const metadata: Metadata = {
     icon: "/logo.png",
     apple: "/logo.png",
   },
+  verification: {
+    google: "06c72afd8b1e6f11",
+  },
   manifest: "/manifest.json",
 };
 

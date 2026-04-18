@@ -48,7 +48,7 @@ export async function sendInquiryNotification(inquiry: {
 
   const mailOptions = {
     from: `"Gurukul Classes" <${process.env.EMAIL_USER}>`,
-    to: "Gurukulclasses001@gmail.com",
+    to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER || "Gurukulclasses001@gmail.com",
     subject: `New Inquiry — ${inquiry.first_name} ${inquiry.last_name} | Gurukul Classes`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 30px; border: 1px solid #e0e0e0; border-radius: 12px; background: #fafafa;">

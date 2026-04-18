@@ -19,8 +19,14 @@ export async function POST(req: NextRequest) {
 
     // Always respond OK — don't reveal if email exists
     if (student) {
+      if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        console.error("CRITICAL: Email environment variables are MISSING.");
+        // We still return 500 to the client, but the server log will show the cause
+        throw new Error("Email configuration missing");
+      }
+
       const code = generateResetCode();
-      storeResetCode(email.trim(), code);
+      await storeResetCode(email.trim(), code);
       await sendPasswordResetEmail(email.trim(), code, student.first_name);
     }
 
@@ -28,8 +34,9 @@ export async function POST(req: NextRequest) {
       success: true,
       message: "If that email is registered, you will receive a reset code shortly.",
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error("Password reset send error:", err);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    const errorMessage = err?.message || "Internal server error";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }

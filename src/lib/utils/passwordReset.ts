@@ -1,31 +1,26 @@
-import { IPasswordReset } from '@/types/models';
+import { PasswordReset } from '@/lib/db/models/PasswordReset';
 
-// In-memory storage for password reset codes
-// In production, consider using Redis or database
-const resetCodes = new Map<string, IPasswordReset>();
-
-export function storeResetCode(email: string, code: string): void {
-  resetCodes.set(email, {
-    email,
-    code,
-    expiresAt: Date.now() + 10 * 60 * 1000 // 10 minutes
-  });
+export async function storeResetCode(email: string, code: string): Promise<void> {
+  const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+  
+  // Upsert the reset code for this email
+  await PasswordReset.findOneAndUpdate(
+    { email },
+    { code, expiresAt },
+    { upsert: true, new: true }
+  );
 }
 
-export function getResetCode(email: string): IPasswordReset | undefined {
-  return resetCodes.get(email);
+export async function deleteResetCode(email: string): Promise<void> {
+  await PasswordReset.deleteOne({ email });
 }
 
-export function deleteResetCode(email: string): void {
-  resetCodes.delete(email);
-}
-
-export function isCodeValid(email: string, code: string): boolean {
-  const stored = resetCodes.get(email);
+export async function isCodeValid(email: string, code: string): Promise<boolean> {
+  const stored = await PasswordReset.findOne({ email });
   
   if (!stored) return false;
-  if (Date.now() > stored.expiresAt) {
-    resetCodes.delete(email);
+  if (new Date() > stored.expiresAt) {
+    await PasswordReset.deleteOne({ email });
     return false;
   }
   

@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Password must be at least 6 characters" }, { status: 400 });
     }
 
-    if (!isCodeValid(email.trim(), String(code).trim())) {
+    if (!(await isCodeValid(email.trim(), String(code).trim()))) {
       return NextResponse.json({ message: "Invalid or expired verification code" }, { status: 400 });
     }
 
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Account not found" }, { status: 404 });
     }
 
-    deleteResetCode(email.trim());
+    await deleteResetCode(email.trim());
 
     return NextResponse.json({ success: true, message: "Password updated successfully" });
   } catch (err) {
