@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Trophy, Star, ArrowLeft, Sparkles, Calendar } from "lucide-react";
+import { Trophy, Star, ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useSocket } from "@/hooks/useSocket";
 

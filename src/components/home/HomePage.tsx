@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import {
   ChevronRight, ArrowRight, Sparkles, Trophy, Star,
   BadgeCheck, Calendar, MapPin, Search, Bot, Loader2,
-  Users, GraduationCap, TrendingUp, Clock, X, Plus, User,
+  GraduationCap, X, Plus, User,
   CheckCircle2, Quote, ChevronLeft,
 } from "lucide-react";
 import Typed from "typed.js";
@@ -1268,7 +1268,7 @@ function CTASection() {
 // ROOT — HomePage
 // ═══════════════════════════════════════════════════════════════════════════════
 export default function HomePage() {
-  const { isConnected } = useSocket();
+  const { } = useSocket();
   const [viewers, setViewers] = useState(1);
 
   // Simulate viewer count with small variance for real-time feel

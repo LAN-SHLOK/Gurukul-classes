@@ -11,4 +11,4 @@ const facultySchema = new Schema({
   created_at: { type: Date, default: Date.now }
 });
 
-export const Faculty = mongoose.models.Faculty || mongoose.model("Faculty", facultySchema);
+export const Faculty = (mongoose.models.Faculty as any) || mongoose.model("Faculty", facultySchema);

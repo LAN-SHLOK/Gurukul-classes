@@ -8,21 +8,6 @@ import { Input } from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
 import confetti from "canvas-confetti";
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-interface FormState {
-  name: string;
-  email: string;
-  message: string;
-}
-
-interface Errors {
-  name?: string;
-  email?: string;
-  message?: string;
-  submit?: string;
-}
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema } from "@/lib/validations";

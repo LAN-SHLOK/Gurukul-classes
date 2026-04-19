@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, RefObject } from "react";
-import VanillaTilt from "vanilla-tilt";
+import VanillaTilt, { TiltOptions } from "vanilla-tilt";
 
-export function useTilt(ref: RefObject<HTMLElement | null>, options?: VanillaTilt.TiltOptions) {
+export function useTilt(ref: RefObject<HTMLElement | null>, options?: TiltOptions) {
   useEffect(() => {
     // Skip on touch devices
     if (window.matchMedia("(pointer: coarse)").matches) return;

@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Briefcase, ArrowLeft, Sparkles, Users, GraduationCap,
+  Briefcase, ArrowLeft, Sparkles, Users,
   TrendingUp, Heart, Upload, Loader2, CheckCircle2, Mail,
-  Phone, MapPin, FileText, Award, Clock
+  Phone, Award, Clock
 } from "lucide-react";
 import Link from "next/link";
 
@@ -25,8 +25,6 @@ export default function JoinFacultyPage() {
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FacultyValues>({

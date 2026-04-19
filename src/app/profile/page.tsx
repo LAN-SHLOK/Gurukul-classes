@@ -20,7 +20,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession({
+  const { data: _session, status } = useSession({
     required: true,
     onUnauthenticated() { redirect("/login"); },
   });

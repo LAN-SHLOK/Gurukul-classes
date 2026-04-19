@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, ChevronRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -12,23 +12,6 @@ const CLASSES = [
   "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th",
   "9th", "10th", "11th Sci", "12th Sci", "JEE", "NEET",
 ];
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-interface FormState {
-  firstName: string;
-  lastName: string;
-  email: string;
-  message: string;
-}
-
-interface Errors {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  className?: string;
-  submit?: string;
-}
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

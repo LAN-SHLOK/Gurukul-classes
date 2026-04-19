@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { LogIn, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
 
 import { useForm } from "react-hook-form";

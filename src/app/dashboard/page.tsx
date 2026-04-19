@@ -23,7 +23,7 @@ interface StudentData {
   feeStatus: "paid" | "pending" | "partial";
   feeAmount?: number; feePaidDate?: string; feeNote?: string;
   standard?: string; enrolledSubjects?: string[]; courses?: string[];
-  created_at?: string;
+  created_at?: string; profileComplete?: boolean;
 }
 interface AttendanceData {
   percentage: number; present: number; total: number; feePaid: boolean;

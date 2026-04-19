@@ -73,7 +73,7 @@ export function useSplitText(options?: { stagger?: number; delay?: number }) {
     const text = el.textContent || "";
     el.innerHTML = text
       .split("")
-      .map((char, i) =>
+      .map((char) =>
         char === " "
           ? " "
           : `<span class="inline-block" style="opacity:0;transform:translateY(40px)">${char}</span>`

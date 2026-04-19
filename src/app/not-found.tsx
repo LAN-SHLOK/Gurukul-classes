@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Home, ArrowLeft, RotateCcw } from "lucide-react";
+import { Home, ArrowLeft } from "lucide-react";
 
 // ─── Isometric Block ──────────────────────────────────────────────────────────
 function IsometricBlock({
@@ -56,19 +56,6 @@ function IsometricBlock({
   );
 }
 
-// ─── Isometric Spinner (loading state) ────────────────────────────────────────
-function IsometricSpinner() {
-  return (
-    <motion.div
-      className="iso-spinner"
-      style={{ width: 40, height: 40, transformStyle: "preserve-3d", position: "relative" }}
-    >
-      <div style={{ position: "absolute", width: 40, height: 40, background: "#2D31FA", transform: "translateZ(15px)", borderRadius: 4 }} />
-      <div style={{ position: "absolute", width: 15, height: 40, background: "#1a1db8", transform: "rotateY(-90deg) translateZ(40px)", borderRadius: "0 4px 4px 0" }} />
-      <div style={{ position: "absolute", width: 40, height: 15, background: "#111399", transform: "rotateX(90deg) translateZ(40px)", borderRadius: "0 0 4px 4px" }} />
-    </motion.div>
-  );
-}
 
 const BLOCKS = [
   { x: 20,  y: 50,  color: "#2D31FA", delay: 0,    size: 44 },

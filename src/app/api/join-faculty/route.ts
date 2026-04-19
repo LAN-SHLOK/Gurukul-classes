@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
 }
 
 // GET endpoint to fetch all applications (admin only)
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     // TODO: Add authentication check for admin
     await connectDB();

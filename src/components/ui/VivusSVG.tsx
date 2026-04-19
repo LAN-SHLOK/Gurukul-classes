@@ -11,7 +11,7 @@ interface VivusSVGProps {
 
 export default function VivusSVG({ children, duration = 200, className = "" }: VivusSVGProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const vivusRef = useRef<Vivus | null>(null);
+  const vivusRef = useRef<any>(null);
   const animated = useRef(false);
 
   useEffect(() => {

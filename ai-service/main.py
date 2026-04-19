@@ -143,8 +143,9 @@ async def academic_mentor(req: QueryRequest):
     mentor_prompt = build_system_prompt(ctx)
 
     try:
+        # Hard-locked to 8B for < 2s response times
         completion = groq_client.chat.completions.create(
-            model="llama-3.1-70b-versatile",
+            model="llama-3.1-8b-instant",
             messages=[
                 {"role": "system", "content": mentor_prompt},
                 {"role": "user",   "content": f"Student Question: {query}\n\nProvide an elite, mentor-level explanation:"},
@@ -156,7 +157,8 @@ async def academic_mentor(req: QueryRequest):
         return QueryResponse(success=True, answer=answer or FALLBACK)
     except Exception as ex:
         print(f"[Groq] Mentor Error: {ex}")
-        return QueryResponse(success=False, answer=FALLBACK)
+        # If Groq fails, we provide a high-quality human fallback
+        return QueryResponse(success=False, answer="The Gurukul AI Mentor is waking up at the moment. Please ask your question again in 20 seconds, and I'll have the answer ready for you!")
 
 # 2. Admin Note Generator (Senior Pedagogy / Content Architect)
 @app.post("/api/admin-note-generator", response_model=NoteResponse)
@@ -185,7 +187,7 @@ STYLE: Formal, exhaustive, and instructional."""
 
     try:
         completion = groq_client.chat.completions.create(
-            model="llama-3.1-70b-versatile",
+            model="llama-3.1-8b-instant",
             response_format={"type": "json_object"},
             messages=[
                 {"role": "system", "content": architect_prompt},

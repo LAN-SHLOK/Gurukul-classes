@@ -7,7 +7,6 @@ export async function middleware(req: NextRequest) {
     secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET 
   });
   const { pathname } = req.nextUrl;
-  const start = Date.now();
 
   // Traffic Logging (Observability)
   console.log(`[TRAFFIC] ${req.method} ${pathname} - IP: ${req.headers.get("x-forwarded-for") || 'local'}`);
@@ -20,7 +19,6 @@ export async function middleware(req: NextRequest) {
   const response = NextResponse.next();
 
   // ─── Security Headers ──────────────────────────────────────────────────────
-  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   
   // Content Security Policy (Hardened)
   const cspHeader = `

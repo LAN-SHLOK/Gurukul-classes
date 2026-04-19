@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bell, BellOff, Check } from "lucide-react";
+import { Bell, Check } from "lucide-react";
 
 export default function PushNotificationButton({ studentId }: { studentId?: string }) {
   const [status, setStatus] = useState<"default" | "granted" | "denied" | "unsupported">("default");

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth";
 import { generateAdminNote } from "@/lib/services/admin-ai";
-import { rateLimit, getIP } from "@/lib/rate-limiter";
+import { rateLimit } from "@/lib/rate-limiter";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { v2 as cloudinary } from "cloudinary";

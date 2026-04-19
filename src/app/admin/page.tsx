@@ -7,7 +7,7 @@ import {
   Lock, ChevronRight, X, Plus, Trash2, Pencil,
   Home, Users, BookOpen, Calendar, BarChart2,
   Megaphone, Search, Clock, TrendingUp, GraduationCap,
-  Briefcase, Download, ExternalLink,
+  Briefcase, Download,
 } from "lucide-react";
 import { Bar } from "react-chartjs-2";
 import {
@@ -19,7 +19,6 @@ import { Input } from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
 import ImageUpload from "@/components/admin/ImageUpload";
 import FileUpload from "@/components/admin/FileUpload";
-import AINoteGenerator from "@/components/admin/AINoteGenerator";
 import { LenisContext as LenisCtx } from "@/components/layout/SmoothScrollProvider";
 import { useSocket } from "@/hooks/useSocket";
 import { 
@@ -1026,19 +1025,7 @@ function ContentSection() {
           <Plus className="w-4 h-4" /> Add {subTab === "faculty" ? "Faculty" : subTab.slice(0, -1)}
         </button>
 
-        {subTab === "notes" && (
-          <AINoteGenerator 
-            standards={STANDARDS}
-            onSuccess={async (data) => {
-              await fetch("/api/admin/notes", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-              });
-              fetchItems();
-            }}
-          />
-        )}
+        {/* AI Note Generator removed for stability focus */}
       </div>
       {loading ? <Loader /> : (
         <div className="space-y-2">

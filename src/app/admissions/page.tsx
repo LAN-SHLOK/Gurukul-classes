@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, GraduationCap, Sparkles, Users, Trophy, Clock } from "lucide-react";
+import { CheckCircle2, GraduationCap, Users, Trophy, Clock } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import InquiryForm from "@/components/forms/InquiryForm";

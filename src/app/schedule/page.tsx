@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/Badge";
 import { useSocket } from "@/hooks/useSocket";
 import { Download, Lock } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 
 // ── Helper functions ──────────────────────────────────────────────────────────
 
