@@ -20,11 +20,12 @@ import ReactMarkdown from "react-markdown";
 const ACCENT = "#2D31FA";
 
 // ─── SECTION WRAPPER ─────────────────────────────────────────────────────────
-function Section({ id, className, children }: { id?: string; className?: string; children: React.ReactNode }) {
+function Section({ id, className, children, style }: { id?: string; className?: string; children: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <section
       id={id}
       className={cn("relative overflow-hidden", className)}
+      style={style}
     >
       {children}
     </section>
@@ -33,12 +34,13 @@ function Section({ id, className, children }: { id?: string; className?: string;
 
 // ─── SCROLLY REVEAL ──────────────────────────────────────────────────────────
 function Reveal({
-  children, delay = 0, y = 40, className,
+  children, delay = 0, y = 40, className, ...props
 }: {
-  children: React.ReactNode; delay?: number; y?: number; className?: string;
+  children: React.ReactNode; delay?: number; y?: number; className?: string; [key: string]: any;
 }) {
   return (
     <motion.div
+      {...props}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
@@ -51,14 +53,14 @@ function Reveal({
 }
 
 // ─── EXPRESSIVE HEADING ──────────────────────────────────────────────────────
-function BigHeading({ children, className }: { children: React.ReactNode; className?: string }) {
+function BigHeading({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
     <h2
       className={cn(
         "font-black tracking-tighter leading-[0.85] uppercase",
         className
       )}
-      style={{ fontSize: "clamp(2.8rem, 8vw, 8rem)" }}
+      style={{ fontSize: "clamp(2.8rem, 8vw, 8rem)", ...style }}
     >
       {children}
     </h2>
@@ -67,9 +69,9 @@ function BigHeading({ children, className }: { children: React.ReactNode; classN
 
 // ─── GLASSMORPHIC CARD ────────────────────────────────────────────────────────
 function GlassCard({
-  children, className, onClick,
+  children, className, onClick, style
 }: {
-  children: React.ReactNode; className?: string; onClick?: () => void;
+  children: React.ReactNode; className?: string; onClick?: () => void; style?: React.CSSProperties;
 }) {
   return (
     <div
@@ -82,6 +84,7 @@ function GlassCard({
       )}
       style={{
         background: "rgba(255,255,255,0.04)",
+        ...style
       }}
     >
       {children}

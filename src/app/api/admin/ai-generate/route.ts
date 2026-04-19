@@ -25,7 +25,8 @@ export async function POST(req: NextRequest) {
 
   // 2. Admin Rate Limit (50 per hour)
   try {
-    await rateLimit(req.ip || "admin-global", 50, 3600); // 50 requests per hour
+    const ip = req.headers.get("x-forwarded-for") || "admin-global";
+    await rateLimit(ip, 50, 3600); // 50 requests per hour
   } catch (error: any) {
     return NextResponse.json({ error: error.message || "Rate limit exceeded" }, { status: 429 });
   }
