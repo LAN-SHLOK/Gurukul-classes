@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, getIP } from "@/lib/rate-limiter";
 
 const PYTHON_AI_URL = process.env.PYTHON_AI_URL || "http://localhost:8000";
 const FALLBACK = "Our AI assistant is temporarily unavailable. Please contact us at Gurukulclasses001@gmail.com or call +91 88490 35591.";
 
 export async function POST(request: NextRequest) {
+  // Rate Limiting: 5 requests per minute
+  const ip = getIP(request);
+  const { success } = await rateLimit(`ai-search:${ip}`, 5, 60000);
+  
+  if (!success) {
+    return NextResponse.json(
+      { success: false, answer: "Slow down, mentor! You're asking questions too fast. Please wait a minute." },
+      { status: 429 }
+    );
+  }
+
   try {
     const { query } = await request.json();
     if (!query?.trim()) {

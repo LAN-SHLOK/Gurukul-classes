@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
 import ImageUpload from "@/components/admin/ImageUpload";
 import FileUpload from "@/components/admin/FileUpload";
+import AINoteGenerator from "@/components/admin/AINoteGenerator";
 import { LenisContext as LenisCtx } from "@/components/layout/SmoothScrollProvider";
 import { useSocket } from "@/hooks/useSocket";
 import { 
@@ -55,6 +56,19 @@ interface StudentDoc {
 
 type AdminTab = "home" | "students" | "content" | "schedules" | "applications";
 type ContentSubTab = "faculty" | "events" | "toppers" | "notes";
+
+interface ContentItem {
+  _id: string;
+  title?: string;
+  name?: string;
+  role?: string;
+  date?: string;
+  subject?: string;
+  exam?: string;
+  standard?: string;
+  image?: string;
+  file_url?: string;
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const inputCls = "w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder:text-white/20 focus:border-[#2D31FA]/60 outline-none px-4 text-sm font-medium transition-all";
@@ -971,7 +985,7 @@ function StudentsSection({ students, schedules, onRefresh }: {
 // ─── Content Section ──────────────────────────────────────────────────────────
 function ContentSection() {
   const [subTab, setSubTab] = useState<ContentSubTab>("faculty");
-  const [items, setItems] = useState<unknown[]>([]);
+  const [items, setItems] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -1006,33 +1020,49 @@ function ContentSection() {
           </button>
         ))}
       </div>
-      <button onClick={() => setModalOpen(true)}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#2D31FA] text-white text-xs font-black uppercase tracking-widest hover:bg-blue-500 active:scale-95 transition-all shadow-[0_0_30px_-8px_rgba(45,49,250,0.6)]">
-        <Plus className="w-4 h-4" /> Add {subTab === "faculty" ? "Faculty" : subTab.slice(0, -1)}
-      </button>
+      <div className="flex items-center gap-3">
+        <button onClick={() => setModalOpen(true)}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#2D31FA] text-white text-xs font-black uppercase tracking-widest hover:bg-blue-500 active:scale-95 transition-all shadow-[0_0_30px_-8px_rgba(45,49,250,0.6)]">
+          <Plus className="w-4 h-4" /> Add {subTab === "faculty" ? "Faculty" : subTab.slice(0, -1)}
+        </button>
+
+        {subTab === "notes" && (
+          <AINoteGenerator 
+            standards={STANDARDS}
+            onSuccess={async (data) => {
+              await fetch("/api/admin/notes", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+              });
+              fetchItems();
+            }}
+          />
+        )}
+      </div>
       {loading ? <Loader /> : (
         <div className="space-y-2">
-          {(items as Array<Record<string, unknown>>).map(item => (
-            <div key={item._id as string} className="neuro-card-dark rounded-2xl p-4 flex items-center gap-3">
-              {(item.image as string) && (
-                <img src={item.image as string} alt="" className="w-10 h-10 rounded-xl object-cover flex-shrink-0" />
+          {items.map(item => (
+            <div key={item._id} className="neuro-card-dark rounded-2xl p-4 flex items-center gap-3">
+              {item.image && (
+                <img src={item.image} alt="" className="w-10 h-10 rounded-xl object-cover flex-shrink-0" />
               )}
               <div className="flex-1 min-w-0">
                 <p className="text-white font-black text-sm truncate">
-                  {(item.title || item.name || "Untitled") as string}
+                  {item.title || item.name || "Untitled"}
                 </p>
                 <p className="text-white/30 text-xs font-medium truncate">
-                  {(item.role || item.date || item.subject || item.exam || item.standard) as string}
+                  {item.role || item.date || item.subject || item.exam || item.standard}
                 </p>
                 {item.file_url && (
-                  <a href={item.file_url as string} target="_blank" rel="noopener noreferrer"
+                  <a href={item.file_url} target="_blank" rel="noopener noreferrer"
                     className="text-[9px] font-black text-[#2D31FA] uppercase tracking-widest hover:underline"
                     onClick={e => e.stopPropagation()}>
                     View File
                   </a>
                 )}
               </div>
-              <button onClick={() => handleDelete(item._id as string)}
+              <button onClick={() => handleDelete(item._id)}
                 className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/30 hover:bg-red-600 hover:text-white transition-all flex-shrink-0">
                 <Trash2 className="w-3.5 h-3.5" />
               </button>

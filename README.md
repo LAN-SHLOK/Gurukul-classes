@@ -1,355 +1,134 @@
-# Gurukul Classes - Premium Educational Platform
+# Gurukul Classes Platform
 
-<div align="center">
-
-**Foundation for Future** - Elite JEE & NEET Coaching Platform
-
-[Live Demo](https://gurukul-classes-bice.vercel.app) • [Documentation](./DEPLOYMENT_GUIDE.md) • [Report Bug](https://github.com/LAN-SHLOK/Gurukul-Classes/issues)
-
-</div>
+A production-grade, enterprise-scale educational management system and AI-powered learning hub designed for Gurukul Classes, Ahmedabad. This ecosystem combines a high-performance Next.js frontend with a specialized Python AI microservice, backed by a robust asynchronous infrastructure.
 
 ---
 
-## Features
+## Technical Stack
 
-### Core Features
-- **Modern Homepage** - Stunning hero section with animations
-- **Course Management** - JEE, NEET, and Board exam courses
-- **Faculty Showcase** - Meet our expert teachers
-- **Toppers Gallery** - Celebrate student achievements
-- **Event Management** - Workshops, seminars, and announcements
-- **Contact System** - Integrated email notifications
-- **Career Portal** - Faculty recruitment with resume uploads
-
-### Authentication & User Management
-- **NextAuth Integration** - Google OAuth & email login
-- **Student Dashboard** - Profile management and progress tracking
-- **Admin Panel** - Complete content and user management
-- **Real-time Analytics** - Live stats and monitoring
-
-### Design & UX
-- **Fully Responsive** - Mobile-first design approach
-- **Dark Theme** - Modern glassmorphic UI
-- **Loading Animations** - Beautiful loading screens
-- **Framer Motion** - Smooth page transitions
-- **Interactive Elements** - Hover effects and micro-interactions
-
-### Technical Features
-- **Next.js 14** - App Router with Server Components
-- **Real-time Updates** - Socket.io integration
-- **AI Search** - Groq-powered intelligent search
-- **Email System** - Automated notifications
-- **Push Notifications** - PWA support
-- **Cloud Storage** - Cloudinary integration
-- **Database** - MongoDB with optimized queries
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
+[![BullMQ](https://img.shields.io/badge/BullMQ-FF4500?style=for-the-badge&logo=micro-strategy&logoColor=white)](https://bullmq.io/)
+[![Pusher](https://img.shields.io/badge/Pusher-300D4F?style=for-the-badge&logo=pusher&logoColor=white)](https://pusher.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
 
 ---
 
-## Tech Stack
+## System Architecture
 
-### Frontend
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white) 
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) 
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) 
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white) 
-![Radix UI](https://img.shields.io/badge/Radix_UI-161618?style=for-the-badge&logo=radix-ui&logoColor=white)
+The platform follows a distributed microservices pattern to ensure zero-downtime background processing and high scalability.
 
-### Backend
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) 
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white) 
-![NextAuth](https://img.shields.io/badge/NextAuth.js-000000?style=for-the-badge&logo=nextauthdotjs&logoColor=white) 
-![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socketdotio&logoColor=white)
-
-### Services & AI
-![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white) 
-![Groq](https://img.shields.io/badge/Groq_AI-000000?style=for-the-badge&logo=google-gemini&logoColor=white) 
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white) 
-![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)
-
----
-
-## Quick Start
-
-### Prerequisites
-- Node.js 18+ 
-- MongoDB database
-- Gmail account (for emails)
-- Cloudinary account (for images)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/LAN-SHLOK/Gurukul-Classes.git
-   cd Gurukul-Classes
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Setup environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
-   
-   Edit `.env.local` with your credentials:
-   ```env
-   # Database
-   MONGODB_URI=your_mongodb_connection_string
-   
-   # Email (Gmail)
-   EMAIL_USER=your-email@gmail.com
-   EMAIL_PASS=your-16-char-app-password
-   
-   # Authentication
-   NEXTAUTH_URL=http://localhost:3000
-   NEXTAUTH_SECRET=your-secret-key
-   GOOGLE_CLIENT_ID=your-google-client-id
-   GOOGLE_CLIENT_SECRET=your-google-client-secret
-   
-   # Admin
-   ADMIN_PASSWORD=YourSecurePassword123
-   
-   # Cloudinary
-   CLOUDINARY_CLOUD_NAME=your-cloud-name
-   CLOUDINARY_API_KEY=your-api-key
-   CLOUDINARY_API_SECRET=your-api-secret
-   
-   # AI (Optional)
-   GROQ_API_KEY=your-groq-api-key
-   ```
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
----
-
-## Project Structure
-
+```mermaid
+graph TD
+    User([User Browser]) -->|Next.js App| NextApp[Next.js Server]
+    NextApp -->|HTTP| PythonAI[Python AI Service]
+    NextApp -->|Add Job| Redis[(Redis Queue)]
+    Redis -->|Process| Worker[Background Worker]
+    Worker -->|Fetch| PythonAI
+    Worker -->|Generate PDF| Worker
+    Worker -->|Store| Cloudinary[Cloudinary]
+    Worker -->|Email| SMTP[SMTP Server]
+    NextApp -->|Real-time| Pusher((Pusher))
+    NextApp -->|Auth| NextAuth[NextAuth.js]
+    NextApp -->|Query| MongoDB[(MongoDB)]
 ```
-gurukul-nextjs/
+
+---
+
+## Ecosystem Modules
+
+### 1. Student Portal (Public Ecosystem)
+- **Academic Mentor**: Llama-3.3-70B powered tutor with deep knowledge of Gujarat Board (GSEB), NCERT, JEE, and NEET.
+- **Course Catalog**: Comprehensive overview of Foundation, Board, and Competitive exam coaching.
+- **Topper Gallery**: Performance tracking and public recognition for top-performing students.
+- **Faculty & Events**: Dynamic directory of educators and real-time institute event calendars.
+- **Admissions Pipeline**: Structured inquiry forms and career/faculty application portals.
+
+### 2. Admin & Staff Control Center
+- **Institutional Management**: Control over Faculty, Events, Toppers, and public Announcements.
+- **Attendance & Schedules**: Centralized tracking of student attendance and dynamic classroom scheduling.
+- **Content Architect**: AI-powered tool for generating branded, illustrated study modules (PDF) in the background.
+- **Push Notification Engine**: Real-time admin alerts and system notifications via Pusher.
+- **Staff Ecosystem**: Specialized dashboard for teaching staff to manage student data and classroom operations.
+
+### 3. AI Learning Hub (`/ai-service`)
+A dedicated Python/FastAPI microservice handling all intelligent computations.
+- **RAG Engine**: Fetches live MongoDB context to ensure AI answers are grounded in Gurukul facts.
+- **Note Architect**: Expert pedagogical generation with descriptive image prompts for complex topics.
+- **Elite Personas**: PhD-level academic guidance optimized for STEM subjects.
+
+---
+
+## Infrastructure Core
+
+### 1. Async Processing (BullMQ + Redis)
+Offloads intensive tasks to background workers:
+- **Async PDF Generation**: Auto-creates branded PDFs with embedded AI diagrams.
+- **Notification Queue**: Background delivery of SMTP emails for inquiries and staff updates.
+
+### 2. Observability (Winston)
+Comprehensive logging layer for system health:
+- **Request Tracing**: Middleware-level tracking of all incoming traffic.
+- **Combined Logs**: Centralized JSON-structured log files for production monitoring.
+
+### 3. Security Hardening
+- **IP Rate Limiting**: Multi-tier throttling for public APIs and admin actions.
+- **Auth.js Integration**: Secure Google OAuth and Credentials-based authentication.
+- **Security Middleware**: Strict Content Security Policy (CSP), XSTS, and XSS protection.
+
+---
+
+## Data Models (MongoDB)
+
+| Model | Purpose |
+| :--- | :--- |
+| **Student** | Core student records, performance, and contact info. |
+| **Faculty** | Educator profiles, expertise, and roles. |
+| **Topper** | Historical exam result data and achiever records. |
+| **Event** | Institute holidays, exams, and event schedules. |
+| **Note** | AI-generated study modules and PDF links. |
+| **Inquiry** | Public admission and contact requests. |
+| **Schedule** | Classroom timings and subject allocations. |
+| **Attendance** | Daily student and staff activity tracking. |
+
+---
+
+## Directory Map
+
+```text
+├── ai-service/              # Python AI Microservice (Expert Brain)
+├── scripts/                 # System utilities & worker runners
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── (auth)/            # Authentication pages
-│   │   ├── admin/             # Admin panel
-│   │   ├── api/               # API routes
-│   │   ├── dashboard/         # Student dashboard
-│   │   └── layout.tsx         # Root layout
-│   ├── components/            # Reusable components
-│   │   ├── ui/                # UI components
-│   │   ├── forms/             # Form components
-│   │   └── layout/            # Layout components
-│   ├── lib/                   # Utilities & configurations
-│   │   ├── db/                # Database models
-│   │   ├── services/          # External services
-│   │   └── utils/             # Helper functions
-│   └── hooks/                 # Custom React hooks
-├── public/                    # Static assets
-├── ai-service/                # Python AI service
-├── package.json               # Dependencies
-├── tailwind.config.js         # Tailwind configuration
-├── next.config.js             # Next.js configuration
-└── DEPLOYMENT_GUIDE.md        # Deployment instructions
+│   ├── app/                 # Next.js App Router (Routes & APIs)
+│   ├── components/          # UI Components (Shadcn + Framer)
+│   ├── lib/
+│   │   ├── db/              # Mongoose Models & Schemas
+│   │   ├── queue/           # BullMQ Client & Workers
+│   │   ├── services/        # AI, Email, and Cloudinary logic
+│   │   ├── logger.ts        # Winston Logging Engine
+│   │   └── rate-limiter.ts  # Advanced Throttling Logic
+│   └── middleware.ts        # Security & Traffic Traces
+└── logs/                    # Production JSON Log Storage
 ```
 
 ---
 
-## Key Pages & Features
+## Setup & Deployment
 
-### Homepage
-- Hero section with animated elements
-- Course overview cards
-- Faculty highlights
-- Student testimonials
-- Real-time statistics
+### Environment Configuration
+The platform requires a `.env.local` containing:
+- `MONGODB_URI`, `REDIS_HOST`, `GROQ_API_KEY`, `PYTHON_AI_URL`, `CLOUDINARY_URL`, `PUSHER_APP_ID`.
 
-### Student Features
-- **Registration & Login** - Google OAuth integration
-- **Dashboard** - Personal progress tracking
-- **Profile Management** - Update personal information
-- **Course Enrollment** - Browse and join courses
-- **Schedule Viewing** - Class timetables
-
-### Faculty Features
-- **Profile Showcase** - Detailed faculty information
-- **Career Applications** - Join faculty form with resume upload
-- **Content Management** - Add/edit courses and materials
-
-### Admin Panel
-- **Dashboard** - Overview with analytics
-- **Student Management** - View, edit, delete students
-- **Content Management** - Manage faculty, events, toppers
-- **Schedule Management** - Create class timetables
-- **Application Review** - Review faculty applications
-- **Announcements** - Broadcast messages
-
-### Contact & Communication
-- **Contact Form** - Automated email notifications
-- **Inquiry Management** - Track and respond to inquiries
-- **Push Notifications** - Real-time updates
-- **Email Templates** - Professional branded emails
+### Bootstrapping
+1. **Frontend**: `npm run dev`
+2. **AI Service**: `uvicorn main:app --port 8000`
+3. **Background Workers**: `npx tsx scripts/run-workers.ts`
 
 ---
 
-## Configuration
-
-### Database Setup
-The application uses MongoDB with the following collections:
-- `users` - Student accounts and profiles
-- `faculties` - Faculty member information
-- `events` - Events and announcements
-- `toppers` - Student achievements
-- `schedules` - Class timetables
-- `inquiries` - Contact form submissions
-- `faculty_applications` - Career applications
-- `announcements` - Admin announcements
-
-### Email Configuration
-1. Enable 2-Factor Authentication on Gmail
-2. Generate App Password
-3. Add credentials to environment variables
-4. Test email functionality
-
-### Authentication Setup
-1. Create Google OAuth application
-2. Configure authorized redirect URIs
-3. Add client credentials to environment
-4. Test login functionality
-
----
-
-## Deployment
-
-### Recommended: Vercel
-1. Push code to GitHub
-2. Connect repository to Vercel
-3. Add environment variables
-4. Deploy automatically
-
----
-
-## Performance & SEO
-
-### Optimizations
-- Next.js App Router - Server-side rendering
-- Image Optimization - Next.js Image component
-- Code Splitting - Automatic bundle optimization
-- Compression - Gzip/Brotli compression
-- Lazy Loading - Components and images
-- PWA Ready - Service worker support
-
-### SEO Features
-- Meta Tags - Dynamic meta descriptions
-- Sitemap - Auto-generated sitemap
-- Robots.txt - Search engine directives
-- Analytics - Vercel Analytics integration
-- Schema Markup - Structured data
-
----
-
-## Testing
-
-### Run Tests
-```bash
-# Type checking
-npm run type-check
-
-# Linting
-npm run lint
-
-# Build test
-npm run build
-
-# Production test
-npm run start
-```
-
-### Manual Testing Checklist
-- [ ] All pages load correctly
-- [ ] Authentication flows work
-- [ ] Forms submit successfully
-- [ ] Admin panel functions
-- [ ] Email notifications send
-- [ ] Mobile responsiveness
-- [ ] Image uploads work
-- [ ] Real-time features function
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
-
-### Development Guidelines
-- Follow TypeScript best practices
-- Use Tailwind CSS for styling
-- Write meaningful commit messages
-- Test thoroughly before submitting
-- Update documentation as needed
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Support
-
-### Getting Help
-- Check [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
-- [Report Issues](https://github.com/LAN-SHLOK/Gurukul-Classes/issues)
-
-### Common Issues
-- **Build Errors:** Clear `.next` and `node_modules`, reinstall
-- **Environment Variables:** Restart after adding new variables
-- **Database Connection:** Check MongoDB Atlas IP whitelist
-- **Email Issues:** Verify Gmail app password and 2FA
-
----
-
-## Acknowledgments
-
-- **Next.js Team** - Amazing React framework
-- **Vercel** - Excellent deployment platform
-- **Tailwind CSS** - Utility-first CSS framework
-- **Framer Motion** - Beautiful animations
-- **MongoDB** - Flexible database solution
-
----
-
-## Roadmap
-
-### Upcoming Features
-- [ ] Mobile app (React Native)
-- [ ] Video conferencing integration
-- [ ] Advanced analytics dashboard
-- [ ] Multi-language support
-- [ ] Payment gateway integration
-- [ ] Advanced AI tutoring
-- [ ] Parent portal
-- [ ] Exam management system
-
----
-
-<div align="center">
-
-**Made for Gurukul Classes**
-
-*Empowering students to achieve their dreams since 2011*
-
-[Star this repo](https://github.com/LAN-SHLOK/Gurukul-Classes) • [Fork it](https://github.com/LAN-SHLOK/Gurukul-Classes/fork)
-
-</div>
+Proprietary Software of Gurukul Classes, Ahmedabad.
+Established 2011.

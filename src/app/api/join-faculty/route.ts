@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db/mongodb";
+import { rateLimit, getIP } from "@/lib/rate-limiter";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -11,6 +12,17 @@ cloudinary.config({
 });
 
 export async function POST(req: NextRequest) {
+  // Rate Limiting: 2 applications per hour (prevents resume spam)
+  const ip = getIP(req);
+  const { success } = await rateLimit(`join-faculty:${ip}`, 2, 3600000);
+  
+  if (!success) {
+    return NextResponse.json(
+      { error: "Too many applications. Please wait an hour before trying again." },
+      { status: 429 }
+    );
+  }
+
   try {
     const formData = await req.formData();
     

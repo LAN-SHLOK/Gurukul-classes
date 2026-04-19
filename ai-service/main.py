@@ -99,18 +99,20 @@ def fetch_rag_context() -> str:
         return ""
 
 def build_system_prompt(ctx: str) -> str:
-    return f"""You are the official AI assistant for Gurukul Classes, an offline coaching institute in Ahmedabad, Gujarat, India.
+    return f"""You are the "Gurukul Elite Mentor", an expert academic AI consultant with a PhD-level grasp of STEM subjects and the Gujarat Board/NCERT curriculum.
 
-LIVE DATA:
-{ctx}
+PEDAGOGICAL CORE:
+1. Explain concepts using First Principles. 
+2. Use relatable analogies (e.g., comparing current to water flow).
+3. If an answer involves math, provide a clear step-by-step breakdown.
+4. PROACTIVELY mention common mistakes students make in JEE/NEET regarding this topic.
 
-FACTS:
-{STATIC_FACTS}
+INSTITUTE KNOWLEDGE:
+- LIVE CONTEXT: {ctx}
+- STATIC FACTS: {STATIC_FACTS}
 
-RULES:
-- Only answer about Gurukul Classes (admissions, courses, faculty, events, location, contact).
-- For anything else say: "I can only assist with Gurukul Classes questions. Contact us at Gurukulclasses001@gmail.com."
-- Answer in 2-3 clear sentences. Never invent information."""
+TONE: 
+Authoritative yet deeply encouraging. You are a world-class tutor representing the 11+ year legacy of Gurukul Classes."""
 
 # ─── Models ───────────────────────────────────────────────────────────────────
 class QueryRequest(BaseModel):
@@ -120,33 +122,89 @@ class QueryResponse(BaseModel):
     success: bool
     answer: str
 
-FALLBACK = "Our AI assistant is temporarily unavailable. Please contact us at Gurukulclasses001@gmail.com or call +91 88490 35591."
+class NoteRequest(BaseModel):
+    prompt: str
+
+class NoteResponse(BaseModel):
+    success: bool
+    markdown: str
+    image_prompts: list[str]
+
+FALLBACK = "The Gurukul AI Engine is currently re-calibrating for peak performance. Please contact us at Gurukulclasses001@gmail.com."
 
 # ─── Endpoints ────────────────────────────────────────────────────────────────
-@app.post("/api/ai-chat", response_model=QueryResponse)
-async def ai_chat(req: QueryRequest):
-    query = req.query.strip()
-    if not query:
-        raise HTTPException(status_code=400, detail="Query is required")
 
+# 1. Academic Mentor (Student Expert - POWERFUL)
+@app.post("/api/academic-mentor", response_model=QueryResponse)
+async def academic_mentor(req: QueryRequest):
+    query = req.query.strip()
     ctx = fetch_rag_context()
-    system_prompt = build_system_prompt(ctx)
+    
+    mentor_prompt = build_system_prompt(ctx)
 
     try:
         completion = groq_client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model="llama-3.3-70b-versatile",
             messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user",   "content": query},
+                {"role": "system", "content": mentor_prompt},
+                {"role": "user",   "content": f"Student Question: {query}\n\nProvide an elite, mentor-level explanation:"},
             ],
-            max_tokens=300,
-            temperature=0.5,
+            max_tokens=1000,
+            temperature=0.4, # Lower temp for higher accuracy
         )
         answer = completion.choices[0].message.content.strip()
         return QueryResponse(success=True, answer=answer or FALLBACK)
     except Exception as ex:
-        print(f"[Groq] Error: {ex}")
+        print(f"[Groq] Mentor Error: {ex}")
         return QueryResponse(success=False, answer=FALLBACK)
+
+# 2. Admin Note Generator (Senior Pedagogy / Content Architect)
+@app.post("/api/admin-note-generator", response_model=NoteResponse)
+async def admin_note_generator(req: NoteRequest):
+    prompt = req.prompt.strip()
+    
+    architect_prompt = """You are the "Gurukul Senior Curriculum Designer". Your goal is to produce elite-tier study material for competitive exams (JEE, NEET, Board).
+
+PEDAGOGY STRUCTURE:
+1. Concept Definition (Clear & Formal).
+2. Theoretical Deep Dive.
+3. Solved Examples (Step-by-step).
+4. Competitive Edge (JEE/NEET specific tips).
+5. Quick Revision Summary.
+
+RESPONSE FORMAT (JSON):
+{
+  "markdown": "the full exhaustive notes...",
+  "image_prompts": ["highly descriptive prompts for visualization"]
+}
+
+IMAGE RULES:
+Generate 0-5 prompts. Use them to clarify the most difficult abstract parts of the topic.
+
+STYLE: Formal, exhaustive, and instructional."""
+
+    try:
+        completion = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            response_format={"type": "json_object"},
+            messages=[
+                {"role": "system", "content": architect_prompt},
+                {"role": "user",   "content": f"Build a comprehensive academic module for: {prompt}"},
+            ],
+            max_tokens=4000, # Max power
+            temperature=0.7,
+        )
+        import json
+        raw = completion.choices[0].message.content
+        data = json.loads(raw)
+        return NoteResponse(
+            success=True, 
+            markdown=data.get("markdown", ""), 
+            image_prompts=data.get("image_prompts", [])
+        )
+    except Exception as ex:
+        print(f"[Groq] Generator Error: {ex}")
+        return NoteResponse(success=False, markdown="Failed to generate.", image_prompts=[])
 
 @app.get("/health")
 async def health():
