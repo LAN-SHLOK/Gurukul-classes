@@ -447,3 +447,35 @@ select::-webkit-scrollbar-thumb:hover {
   background: #4548ff;
 }
 
+/* ─── AI Chat Markdown Styles ─── */
+.markdown-content p {
+  margin-bottom: 0.75rem;
+}
+.markdown-content p:last-child {
+  margin-bottom: 0;
+}
+.markdown-content strong {
+  font-weight: 800;
+  color: #fff;
+}
+.markdown-content ul, .markdown-content ol {
+  margin-bottom: 0.75rem;
+  padding-left: 1.25rem;
+}
+.markdown-content li {
+  margin-bottom: 0.25rem;
+}
+.markdown-content ul {
+  list-style-type: disc;
+}
+.markdown-content ol {
+  list-style-type: decimal;
+}
+.markdown-content code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  font-size: 0.85em;
+}
+

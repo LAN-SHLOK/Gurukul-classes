@@ -21,7 +21,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            "flex h-12 w-full rounded-xl border-2 px-4 py-2 text-base text-gray-900 transition-all duration-200 outline-none placeholder:text-gray-400 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-12 w-full rounded-xl border-2 px-4 py-2 text-base text-white bg-white/[0.04] transition-all duration-200 outline-none placeholder:text-gray-400 disabled:cursor-not-allowed disabled:opacity-50",
             "focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10",
             error ? "border-red-500 focus:border-red-500 focus:ring-red-500/10" : "hover:border-gray-200",
             className

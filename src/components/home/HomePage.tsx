@@ -14,6 +14,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useSocket } from "@/hooks/useSocket";
 import { annotate } from "rough-notation";
 import { cn } from "@/lib/utils";
+import ReactMarkdown from "react-markdown";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const ACCENT = "#2D31FA";
@@ -727,7 +728,13 @@ function AISection() {
                             ? "bg-white/[0.06] text-white rounded-tr-none"
                             : "bg-[#2D31FA]/15 border border-[#2D31FA]/20 text-white/80 rounded-tl-none"
                         )}>
-                          {m.text}
+                          {m.role === "bot" ? (
+                            <div className="markdown-content">
+                              <ReactMarkdown>{m.text}</ReactMarkdown>
+                            </div>
+                          ) : (
+                            m.text
+                          )}
                         </div>
                       </div>
                     ))
