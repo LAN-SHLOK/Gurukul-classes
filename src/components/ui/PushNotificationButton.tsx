@@ -14,11 +14,25 @@ export default function PushNotificationButton({ studentId }: { studentId?: stri
   }, []);
 
   const enable = async () => {
-    if (!("Notification" in window)) return;
+    if (!("Notification" in window)) {
+      console.warn("[Push] Notifications not supported by this browser.");
+      return;
+    }
+    
+    // Safety check for non-localhost/non-https
+    if (window.location.protocol !== "https:" && window.location.hostname !== "localhost") {
+      console.error("[Push] Notifications require HTTPS or Localhost.");
+      alert("Browser notifications only work on HTTPS or Localhost.");
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
+      console.log("[Push] Requesting permission...");
       const permission = await Notification.requestPermission();
       setStatus(permission as any);
+      console.log("[Push] Permission status:", permission);
 
       if (permission === "granted") {
         // Show a test notification immediately
@@ -31,6 +45,7 @@ export default function PushNotificationButton({ studentId }: { studentId?: stri
         if ("serviceWorker" in navigator) {
           try {
             const reg = await navigator.serviceWorker.ready;
+            console.log("[Push] ServiceWorker ready. Subscribing...");
             const sub = await reg.pushManager.subscribe({
               userVisibleOnly: true,
               applicationServerKey: urlBase64ToUint8Array(
@@ -38,18 +53,25 @@ export default function PushNotificationButton({ studentId }: { studentId?: stri
                 "BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U"
               ),
             });
+            
+            console.log("[Push] Subscription successful. Sending to server...");
             await fetch("/api/push/subscribe", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ subscription: sub.toJSON(), student_id: studentId }),
             });
-          } catch {
-            // Push subscription failed but notification permission is still granted
+            console.log("[Push] Server sync complete.");
+          } catch (err) {
+            console.error("[Push] Subscription failed:", err);
           }
+        } else {
+          console.warn("[Push] Service Worker not found in navigator.");
         }
+      } else if (permission === "denied") {
+        alert("Notifications are blocked in your browser settings. Please click the lock icon in the URL bar to unblock them.");
       }
     } catch (e) {
-      console.error("[Push]", e);
+      console.error("[Push] Critical Error:", e);
     }
     setLoading(false);
   };
