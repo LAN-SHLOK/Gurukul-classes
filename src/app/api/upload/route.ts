@@ -27,32 +27,49 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    // Validate file type
-    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-    if (!allowed.includes(file.type)) {
-      return NextResponse.json({ error: "Invalid file type. Only JPG, PNG, WEBP, GIF allowed." }, { status: 400 });
+    // Standard allowed types (Images) + Admin allowed types (Docs)
+    const allowed = [
+      "image/jpeg", "image/png", "image/webp", "image/gif",
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/zip",
+      "text/plain"
+    ];
+
+    if (!allowed.includes(file.type) && !file.name.endsWith(".pdf")) {
+      return NextResponse.json({ error: "Invalid file type." }, { status: 400 });
     }
 
-    // Validate file size — 5MB
-    if (file.size > 5 * 1024 * 1024) {
-      return NextResponse.json({ error: "File size exceeds 5MB limit." }, { status: 400 });
+    // 50MB limit as requested for Admin Note uploads
+    const MAX_SIZE = 50 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json({ error: "File size exceeds 50MB limit." }, { status: 400 });
     }
 
-    // Convert to base64 data URI for Cloudinary upload
+    // Convert to base64 for Cloudinary
     const bytes  = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const base64 = buffer.toString("base64");
-    const dataUri = `data:${file.type};base64,${base64}`;
+    const dataUri = `data:${file.type || "application/octet-stream"};base64,${base64}`;
 
     configureCloudinary();
+    
+    // Use resource_type: "auto" to handle both images and raw files (PDF/Docs)
     const result = await cloudinary.uploader.upload(dataUri, {
       folder: "gurukul-classes",
-      resource_type: "image",
+      resource_type: "auto",
+      public_id: file.name.split(".")[0] + "_" + Date.now(),
     });
 
-    return NextResponse.json({ success: true, secure_url: result.secure_url, url: result.secure_url });
+    return NextResponse.json({ 
+      success: true, 
+      secure_url: result.secure_url, 
+      url: result.secure_url,
+      resource_type: result.resource_type
+    });
   } catch (error: any) {
-    console.error("[Upload] Cloudinary error:", JSON.stringify(error?.message || error));
+    console.error("[Upload] Cloudinary error:", error?.message || error);
     return NextResponse.json({ error: `Upload failed: ${error?.message || "Unknown error"}` }, { status: 500 });
   }
 }

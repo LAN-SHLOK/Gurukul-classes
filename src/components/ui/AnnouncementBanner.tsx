@@ -13,27 +13,32 @@ export default function AnnouncementBanner() {
   const { on, off } = useSocket();
 
   useEffect(() => {
-    if (!session || session.user?.role !== "student") return;
+    // Only fetch for logged in students with paid fees
+    // @ts-ignore
+    const isPaid = session?.user?.role === "student" && session?.user?.feeStatus === "paid";
+    if (!isPaid) {
+      setText(null);
+      return;
+    }
 
-    // Fetch latest announcement on mount
     fetch("/api/announcements")
       .then(r => r.json())
       .then(d => { if (d?.text) setText(d.text); })
-      .catch(() => {});
+      .catch((err) => console.error("Announcement fetch error:", err));
 
-    // Listen for real-time announcements via Pusher
     const handler = (data: { text: string }) => {
       if (data?.text) {
         setText(data.text);
-        setDismissed(false); // re-show on new announcement
+        setDismissed(false);
       }
     };
     on("announcement", handler);
     return () => off("announcement", handler);
   }, [session, on, off]);
 
-  if (!session || session.user?.role !== "student") return null;
-  if (!text || dismissed) return null;
+  // @ts-ignore
+  const isPaid = session?.user?.role === "student" && session?.user?.feeStatus === "paid";
+  if (!isPaid || !text || dismissed) return null;
 
   return (
     <AnimatePresence>

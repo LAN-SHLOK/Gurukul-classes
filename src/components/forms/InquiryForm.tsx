@@ -30,69 +30,69 @@ interface Errors {
   submit?: string;
 }
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { inquirySchema } from "@/lib/validations";
+import * as z from "zod";
+
+type InquiryValues = z.infer<typeof inquirySchema>;
+
 export default function InquiryForm() {
-  const [form, setForm] = useState<FormState>({ firstName: "", lastName: "", email: "", message: "" });
-  const [selectedClass, setSelectedClass] = useState<string | null>(null);
-  const [errors, setErrors] = useState<Errors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const validate = (): boolean => {
-    const newErrors: Errors = {};
-    if (!form.firstName.trim()) newErrors.firstName = "First name is required";
-    if (!form.lastName.trim()) newErrors.lastName = "Last name is required";
-    if (!form.email.trim() || !EMAIL_REGEX.test(form.email)) newErrors.email = "Valid email is required";
-    if (!selectedClass) newErrors.className = "Please select a class";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<InquiryValues>({
+    resolver: zodResolver(inquirySchema),
+    defaultValues: {
+      className: "",
+    }
+  });
+
+  const selectedClass = watch("className");
 
   const fireConfetti = () => {
     confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ["#2D31FA", "#ffffff", "#a5b4fc"] });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
-
+  const onSubmit = async (data: InquiryValues) => {
     setIsLoading(true);
-    setErrors({});
+    setSubmitError(null);
 
     try {
       const res = await fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: form.firstName.trim(),
-          lastName: form.lastName.trim(),
-          email: form.email.trim(),
-          className: selectedClass,
-          message: form.message.trim(),
-        }),
+        body: JSON.stringify(data),
       });
 
-      const data = await res.json();
+      const result = await res.json();
 
       if (!res.ok) {
-        setErrors({ submit: data.message || "Something went wrong. Please try again." });
+        setSubmitError(result.message || "Something went wrong. Please try again.");
         return;
       }
 
       fireConfetti();
       setIsSubmitted(true);
+      reset();
     } catch {
-      setErrors({ submit: "Network error. Please check your connection and try again." });
+      setSubmitError("Network error. Please check your connection and try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleReset = () => {
-    setForm({ firstName: "", lastName: "", email: "", message: "" });
-    setSelectedClass(null);
-    setErrors({});
     setIsSubmitted(false);
+    setSubmitError(null);
   };
 
   return (
@@ -117,50 +117,44 @@ export default function InquiryForm() {
       ) : (
         <motion.form
           key="form"
-          ref={formRef}
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="space-y-10"
           noValidate
         >
-          {/* Personal details */}
           <div className="space-y-6">
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#2D31FA]">Personal Credentials</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
                 <Input
                   placeholder="First Name"
-                  value={form.firstName}
-                  onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+                  {...register("firstName")}
                   className={cn("bg-gray-50 border-none rounded-2xl py-6 text-gray-900 placeholder:text-gray-400", errors.firstName && "ring-2 ring-red-400")}
                 />
-                {errors.firstName && <p className="text-xs text-red-500 font-bold ml-2">{errors.firstName}</p>}
+                {errors.firstName && <p className="text-[10px] text-red-500 font-bold ml-2">{errors.firstName.message}</p>}
               </div>
               <div className="space-y-1">
                 <Input
                   placeholder="Last Name"
-                  value={form.lastName}
-                  onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                  {...register("lastName")}
                   className={cn("bg-gray-50 border-none rounded-2xl py-6 text-gray-900 placeholder:text-gray-400", errors.lastName && "ring-2 ring-red-400")}
                 />
-                {errors.lastName && <p className="text-xs text-red-500 font-bold ml-2">{errors.lastName}</p>}
+                {errors.lastName && <p className="text-[10px] text-red-500 font-bold ml-2">{errors.lastName.message}</p>}
               </div>
             </div>
             <div className="space-y-1">
               <Input
                 placeholder="Email Address"
                 type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                {...register("email")}
                 className={cn("bg-gray-50 border-none rounded-2xl py-6 text-gray-900 placeholder:text-gray-400", errors.email && "ring-2 ring-red-400")}
               />
-              {errors.email && <p className="text-xs text-red-500 font-bold ml-2">{errors.email}</p>}
+              {errors.email && <p className="text-[10px] text-red-500 font-bold ml-2">{errors.email.message}</p>}
             </div>
           </div>
 
-          {/* Class selector */}
           <div className="space-y-4">
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#2D31FA]">Target Class</h3>
             <div className="flex flex-wrap gap-2">
@@ -168,7 +162,7 @@ export default function InquiryForm() {
                 <button
                   key={cls}
                   type="button"
-                  onClick={() => { setSelectedClass(cls); setErrors((e) => ({ ...e, className: undefined })); }}
+                  onClick={() => setValue("className", cls, { shouldValidate: true })}
                   className={cn(
                     "px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all min-h-[44px]",
                     selectedClass === cls
@@ -180,26 +174,24 @@ export default function InquiryForm() {
                 </button>
               ))}
             </div>
-            {errors.className && <p className="text-xs text-red-500 font-bold ml-1">{errors.className}</p>}
+            {errors.className && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.className.message}</p>}
           </div>
 
-          {/* Optional message */}
           <div className="space-y-2">
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#2D31FA]">Message (Optional)</h3>
             <textarea
               placeholder="Any specific questions or requirements..."
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
+              {...register("message")}
               className="w-full h-32 bg-gray-50 border-none rounded-[24px] p-6 text-sm font-medium text-gray-900 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#2D31FA]/30 transition-all resize-none"
             />
           </div>
 
-          {errors.submit && (
-            <p className="text-sm text-red-500 font-bold text-center bg-red-50 rounded-2xl py-3 px-4">{errors.submit}</p>
+          {(submitError || errors.root) && (
+            <p className="text-sm text-red-500 font-bold text-center bg-red-50 rounded-2xl py-3 px-4">{submitError || "Input Error Detected"}</p>
           )}
 
           <div className="space-y-4 pt-2">
-            <Button type="submit" disabled={isLoading} className="w-full rounded-[24px] group h-16">
+            <Button type="submit" disabled={isLoading} className="w-full rounded-[24px] group h-16 shadow-[0_10px_40px_-10px_rgba(45,49,250,0.5)] hover:shadow-[0_15px_50px_-10px_rgba(45,49,250,0.6)] transition-all">
               {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
                 <>
                   SUBMIT INQUIRY

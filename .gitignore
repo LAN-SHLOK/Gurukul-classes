@@ -22,6 +22,11 @@ yarn-error.log*
 
 # Vercel
 .vercel
+.vercel_build_output
+.vercel_vc_config
+.vercel_config
+.vercel_metadata
+.vercel_cache
 
 # TypeScript
 *.tsbuildinfo

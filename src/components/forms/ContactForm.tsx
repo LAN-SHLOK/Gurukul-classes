@@ -23,65 +23,68 @@ interface Errors {
   submit?: string;
 }
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { contactSchema } from "@/lib/validations";
+import * as z from "zod";
+
+type ContactValues = z.infer<typeof contactSchema>;
+
 export default function ContactForm() {
-  const [form, setForm] = useState<FormState>({ name: "", email: "", message: "" });
-  const [errors, setErrors] = useState<Errors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const validate = (): boolean => {
-    const newErrors: Errors = {};
-    if (!form.name.trim()) newErrors.name = "Name is required";
-    if (!form.email.trim() || !EMAIL_REGEX.test(form.email)) newErrors.email = "Valid email is required";
-    if (!form.message.trim()) newErrors.message = "Message is required";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactValues>({
+    resolver: zodResolver(contactSchema),
+  });
 
   const fireConfetti = () => {
     confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ["#2D31FA", "#ffffff", "#a5b4fc"] });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
-
+  const onSubmit = async (data: ContactValues) => {
     setIsLoading(true);
-    setErrors({});
+    setError(null);
 
     try {
       const res = await fetch("/api/inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstName: form.name.trim(),
-          lastName: "",
-          email: form.email.trim(),
+          firstName: data.name.split(' ')[0] || data.name,
+          lastName: data.name.split(' ').slice(1).join(' ') || "",
+          email: data.email,
           className: "General",
-          message: form.message.trim(),
+          message: data.message,
         }),
       });
 
-      const data = await res.json();
+      const result = await res.json();
 
       if (!res.ok) {
-        setErrors({ submit: data.message || "Something went wrong. Please try again." });
+        setError(result.message || "Something went wrong. Please try again.");
         return;
       }
 
       fireConfetti();
       setIsSubmitted(true);
+      reset();
     } catch {
-      setErrors({ submit: "Network error. Please check your connection and try again." });
+      setError("Network error. Please check your connection and try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleReset = () => {
-    setForm({ name: "", email: "", message: "" });
-    setErrors({});
     setIsSubmitted(false);
+    setError(null);
   };
 
   return (
@@ -106,7 +109,7 @@ export default function ContactForm() {
       ) : (
         <motion.form
           key="form"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -118,38 +121,35 @@ export default function ContactForm() {
             <div className="space-y-1">
               <Input
                 placeholder="Your Name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                {...register("name")}
                 className={cn("h-14 bg-black/40 border-white/5 text-white rounded-2xl px-6", errors.name && "ring-2 ring-red-400")}
               />
-              {errors.name && <p className="text-xs text-red-400 font-bold ml-2">{errors.name}</p>}
+              {errors.name && <p className="text-[10px] text-red-400 font-bold ml-2">{errors.name.message}</p>}
             </div>
             <div className="space-y-1">
               <Input
                 placeholder="Electronic Mail"
                 type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                {...register("email")}
                 className={cn("h-14 bg-black/40 border-white/5 text-white rounded-2xl px-6", errors.email && "ring-2 ring-red-400")}
               />
-              {errors.email && <p className="text-xs text-red-400 font-bold ml-2">{errors.email}</p>}
+              {errors.email && <p className="text-[10px] text-red-400 font-bold ml-2">{errors.email.message}</p>}
             </div>
             <div className="space-y-1">
               <textarea
                 placeholder="Detailed Communication..."
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                {...register("message")}
                 className={cn(
                   "w-full h-40 bg-black/40 border border-white/5 rounded-2xl p-6 text-white placeholder:text-white/30 text-sm outline-none focus:border-[#2D31FA]/50 transition-all font-medium resize-none",
                   errors.message && "ring-2 ring-red-400"
                 )}
               />
-              {errors.message && <p className="text-xs text-red-400 font-bold ml-2">{errors.message}</p>}
+              {errors.message && <p className="text-[10px] text-red-400 font-bold ml-2">{errors.message.message}</p>}
             </div>
           </div>
 
-          {errors.submit && (
-            <p className="text-sm text-red-400 font-bold text-center bg-red-500/10 rounded-2xl py-3 px-4">{errors.submit}</p>
+          {(error || errors.root) && (
+            <p className="text-[10px] text-red-400 font-black uppercase tracking-widest text-center bg-red-500/10 rounded-2xl py-4 px-4 border border-red-500/20">{error || "Input Error Detected"}</p>
           )}
 
           <Button type="submit" disabled={isLoading} className="w-full h-16 rounded-[24px] group">

@@ -8,23 +8,38 @@ import { LogIn, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { cn } from "@/lib/utils";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "@/lib/validations";
+import * as z from "zod";
+
+type LoginValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginValues>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginValues) => {
     setError(null);
-    const result = await signIn("credentials", { email, password, redirect: false });
+    const result = await signIn("credentials", { 
+      email: data.email, 
+      password: data.password, 
+      redirect: false 
+    });
+    
     if (result?.error) {
       setError("Invalid email or password");
-      setLoading(false);
     } else {
       router.push("/dashboard");
     }
@@ -86,17 +101,19 @@ export default function LoginPage() {
           </div>
 
           {/* Credentials form */}
-          <form onSubmit={handleLogin} className="space-y-3">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-1">
               <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 px-1">Email</label>
               <input
                 type="email"
                 placeholder="rahul@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder:text-white/20 focus:border-[#2D31FA]/60 outline-none px-4 text-sm font-medium transition-all"
+                {...register("email")}
+                className={cn(
+                  "w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder:text-white/20 focus:border-[#2D31FA]/60 outline-none px-4 text-sm font-medium transition-all",
+                  errors.email && "border-red-500/50"
+                )}
               />
+              {errors.email && <p className="text-[10px] text-red-400 font-bold ml-1">{errors.email.message}</p>}
             </div>
             <div className="space-y-1">
               <div className="flex items-center justify-between px-1">
@@ -108,11 +125,13 @@ export default function LoginPage() {
               <input
                 type="password"
                 placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder:text-white/20 focus:border-[#2D31FA]/60 outline-none px-4 text-sm font-medium transition-all"
+                {...register("password")}
+                className={cn(
+                  "w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder:text-white/20 focus:border-[#2D31FA]/60 outline-none px-4 text-sm font-medium transition-all",
+                  errors.password && "border-red-500/50"
+                )}
               />
+              {errors.password && <p className="text-[10px] text-red-400 font-bold ml-1">{errors.password.message}</p>}
             </div>
 
             {error && (
@@ -124,10 +143,10 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={isSubmitting}
               className="w-full h-12 rounded-xl bg-[#2D31FA] text-white text-xs font-black uppercase tracking-widest hover:bg-blue-500 active:scale-[0.98] transition-all disabled:opacity-60 flex items-center justify-center gap-2 shadow-[0_0_30px_-8px_rgba(45,49,250,0.6)]"
             >
-              {loading
+              {isSubmitting
                 ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 : <><LogIn className="w-4 h-4" /> Sign In</>
               }

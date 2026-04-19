@@ -1,82 +1,74 @@
-# 🎓 Gurukul Classes - Premium Educational Platform
+# Gurukul Classes - Premium Educational Platform
 
 <div align="center">
 
-![Gurukul Classes](https://img.shields.io/badge/Gurukul-Classes-2D31FA?style=for-the-badge&logo=graduation-cap)
-![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
-
 **Foundation for Future** - Elite JEE & NEET Coaching Platform
 
-[🚀 Live Demo](https://gurukul-classes.vercel.app) • [📖 Documentation](./DEPLOYMENT_GUIDE.md) • [🐛 Report Bug](https://github.com/yourusername/gurukul-nextjs/issues)
+[Live Demo](https://gurukul-classes-bice.vercel.app) • [Documentation](./DEPLOYMENT_GUIDE.md) • [Report Bug](https://github.com/LAN-SHLOK/Gurukul-Classes/issues)
 
 </div>
 
 ---
 
-## ✨ Features
+## Features
 
-### 🎯 **Core Features**
-- **🏠 Modern Homepage** - Stunning hero section with animations
-- **📚 Course Management** - JEE, NEET, and Board exam courses
-- **👨‍🏫 Faculty Showcase** - Meet our expert teachers
-- **🏆 Toppers Gallery** - Celebrate student achievements
-- **📅 Event Management** - Workshops, seminars, and announcements
-- **📞 Contact System** - Integrated email notifications
-- **💼 Career Portal** - Faculty recruitment with resume uploads
+### Core Features
+- **Modern Homepage** - Stunning hero section with animations
+- **Course Management** - JEE, NEET, and Board exam courses
+- **Faculty Showcase** - Meet our expert teachers
+- **Toppers Gallery** - Celebrate student achievements
+- **Event Management** - Workshops, seminars, and announcements
+- **Contact System** - Integrated email notifications
+- **Career Portal** - Faculty recruitment with resume uploads
 
-### 🔐 **Authentication & User Management**
-- **🔑 NextAuth Integration** - Google OAuth & email login
-- **👤 Student Dashboard** - Profile management and progress tracking
-- **🛡️ Admin Panel** - Complete content and user management
-- **📊 Real-time Analytics** - Live stats and monitoring
+### Authentication & User Management
+- **NextAuth Integration** - Google OAuth & email login
+- **Student Dashboard** - Profile management and progress tracking
+- **Admin Panel** - Complete content and user management
+- **Real-time Analytics** - Live stats and monitoring
 
-### 🎨 **Design & UX**
-- **📱 Fully Responsive** - Mobile-first design approach
-- **🌙 Dark Theme** - Modern glassmorphic UI
-- **⚡ Loading Animations** - Beautiful loading screens
-- **🎭 Framer Motion** - Smooth page transitions
-- **✨ Interactive Elements** - Hover effects and micro-interactions
+### Design & UX
+- **Fully Responsive** - Mobile-first design approach
+- **Dark Theme** - Modern glassmorphic UI
+- **Loading Animations** - Beautiful loading screens
+- **Framer Motion** - Smooth page transitions
+- **Interactive Elements** - Hover effects and micro-interactions
 
-### 🔧 **Technical Features**
-- **🚀 Next.js 14** - App Router with Server Components
-- **📡 Real-time Updates** - Socket.io integration
-- **🤖 AI Search** - Groq-powered intelligent search
-- **📧 Email System** - Automated notifications
-- **🔔 Push Notifications** - PWA support
-- **☁️ Cloud Storage** - Cloudinary integration
-- **🗄️ Database** - MongoDB with optimized queries
-
----
-
-## 🛠️ Tech Stack
-
-### **Frontend**
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **Animations:** Framer Motion
-- **UI Components:** Custom components with Radix UI
-- **Icons:** Lucide React
-
-### **Backend**
-- **Runtime:** Node.js
-- **Database:** MongoDB with Mongoose
-- **Authentication:** NextAuth.js
-- **File Upload:** Cloudinary
-- **Email:** Nodemailer (Gmail SMTP)
-- **Real-time:** Socket.io
-
-### **AI & External Services**
-- **AI Search:** Groq API
-- **Maps:** Google Maps API
-- **Analytics:** Vercel Analytics
-- **Deployment:** Vercel (recommended)
+### Technical Features
+- **Next.js 14** - App Router with Server Components
+- **Real-time Updates** - Socket.io integration
+- **AI Search** - Groq-powered intelligent search
+- **Email System** - Automated notifications
+- **Push Notifications** - PWA support
+- **Cloud Storage** - Cloudinary integration
+- **Database** - MongoDB with optimized queries
 
 ---
 
-## 🚀 Quick Start
+## Tech Stack
+
+### Frontend
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white) 
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) 
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) 
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white) 
+![Radix UI](https://img.shields.io/badge/Radix_UI-161618?style=for-the-badge&logo=radix-ui&logoColor=white)
+
+### Backend
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) 
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white) 
+![NextAuth](https://img.shields.io/badge/NextAuth.js-000000?style=for-the-badge&logo=nextauthdotjs&logoColor=white) 
+![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socketdotio&logoColor=white)
+
+### Services & AI
+![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white) 
+![Groq](https://img.shields.io/badge/Groq_AI-000000?style=for-the-badge&logo=google-gemini&logoColor=white) 
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white) 
+![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)
+
+---
+
+## Quick Start
 
 ### Prerequisites
 - Node.js 18+ 
@@ -88,8 +80,8 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/gurukul-nextjs.git
-   cd gurukul-nextjs
+   git clone https://github.com/LAN-SHLOK/Gurukul-Classes.git
+   cd Gurukul-Classes
    ```
 
 2. **Install dependencies**
@@ -99,7 +91,7 @@
 
 3. **Setup environment variables**
    ```bash
-   cp .env.local.example .env.local
+   cp .env.example .env.local
    ```
    
    Edit `.env.local` with your credentials:
@@ -139,58 +131,58 @@
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 gurukul-nextjs/
-├── 📁 src/
-│   ├── 📁 app/                    # Next.js App Router
-│   │   ├── 📁 (auth)/            # Authentication pages
-│   │   ├── 📁 admin/             # Admin panel
-│   │   ├── 📁 api/               # API routes
-│   │   ├── 📁 dashboard/         # Student dashboard
-│   │   └── 📄 layout.tsx         # Root layout
-│   ├── 📁 components/            # Reusable components
-│   │   ├── 📁 ui/                # UI components
-│   │   ├── 📁 forms/             # Form components
-│   │   └── 📁 layout/            # Layout components
-│   ├── 📁 lib/                   # Utilities & configurations
-│   │   ├── 📁 db/                # Database models
-│   │   ├── 📁 services/          # External services
-│   │   └── 📁 utils/             # Helper functions
-│   └── 📁 hooks/                 # Custom React hooks
-├── 📁 public/                    # Static assets
-├── 📁 ai-service/                # Python AI service
-├── 📄 package.json               # Dependencies
-├── 📄 tailwind.config.js         # Tailwind configuration
-├── 📄 next.config.js             # Next.js configuration
-└── 📄 DEPLOYMENT_GUIDE.md        # Deployment instructions
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── (auth)/            # Authentication pages
+│   │   ├── admin/             # Admin panel
+│   │   ├── api/               # API routes
+│   │   ├── dashboard/         # Student dashboard
+│   │   └── layout.tsx         # Root layout
+│   ├── components/            # Reusable components
+│   │   ├── ui/                # UI components
+│   │   ├── forms/             # Form components
+│   │   └── layout/            # Layout components
+│   ├── lib/                   # Utilities & configurations
+│   │   ├── db/                # Database models
+│   │   ├── services/          # External services
+│   │   └── utils/             # Helper functions
+│   └── hooks/                 # Custom React hooks
+├── public/                    # Static assets
+├── ai-service/                # Python AI service
+├── package.json               # Dependencies
+├── tailwind.config.js         # Tailwind configuration
+├── next.config.js             # Next.js configuration
+└── DEPLOYMENT_GUIDE.md        # Deployment instructions
 ```
 
 ---
 
-## 🎯 Key Pages & Features
+## Key Pages & Features
 
-### 🏠 **Homepage**
+### Homepage
 - Hero section with animated elements
 - Course overview cards
 - Faculty highlights
 - Student testimonials
 - Real-time statistics
 
-### 👨‍🎓 **Student Features**
+### Student Features
 - **Registration & Login** - Google OAuth integration
 - **Dashboard** - Personal progress tracking
 - **Profile Management** - Update personal information
 - **Course Enrollment** - Browse and join courses
 - **Schedule Viewing** - Class timetables
 
-### 👨‍🏫 **Faculty Features**
+### Faculty Features
 - **Profile Showcase** - Detailed faculty information
 - **Career Applications** - Join faculty form with resume upload
 - **Content Management** - Add/edit courses and materials
 
-### 🛡️ **Admin Panel**
+### Admin Panel
 - **Dashboard** - Overview with analytics
 - **Student Management** - View, edit, delete students
 - **Content Management** - Manage faculty, events, toppers
@@ -198,7 +190,7 @@ gurukul-nextjs/
 - **Application Review** - Review faculty applications
 - **Announcements** - Broadcast messages
 
-### 📞 **Contact & Communication**
+### Contact & Communication
 - **Contact Form** - Automated email notifications
 - **Inquiry Management** - Track and respond to inquiries
 - **Push Notifications** - Real-time updates
@@ -206,9 +198,9 @@ gurukul-nextjs/
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
-### **Database Setup**
+### Database Setup
 The application uses MongoDB with the following collections:
 - `users` - Student accounts and profiles
 - `faculties` - Faculty member information
@@ -219,13 +211,13 @@ The application uses MongoDB with the following collections:
 - `faculty_applications` - Career applications
 - `announcements` - Admin announcements
 
-### **Email Configuration**
+### Email Configuration
 1. Enable 2-Factor Authentication on Gmail
 2. Generate App Password
 3. Add credentials to environment variables
 4. Test email functionality
 
-### **Authentication Setup**
+### Authentication Setup
 1. Create Google OAuth application
 2. Configure authorized redirect URIs
 3. Add client credentials to environment
@@ -233,47 +225,38 @@ The application uses MongoDB with the following collections:
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
-### **Recommended: Vercel**
+### Recommended: Vercel
 1. Push code to GitHub
 2. Connect repository to Vercel
 3. Add environment variables
 4. Deploy automatically
 
-### **Alternative: Railway/Netlify**
-See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for detailed instructions.
+---
 
-### **Self-Hosted**
-- Ubuntu 20.04+ server
-- PM2 for process management
-- Nginx reverse proxy
-- SSL certificate (Let's Encrypt)
+## Performance & SEO
+
+### Optimizations
+- Next.js App Router - Server-side rendering
+- Image Optimization - Next.js Image component
+- Code Splitting - Automatic bundle optimization
+- Compression - Gzip/Brotli compression
+- Lazy Loading - Components and images
+- PWA Ready - Service worker support
+
+### SEO Features
+- Meta Tags - Dynamic meta descriptions
+- Sitemap - Auto-generated sitemap
+- Robots.txt - Search engine directives
+- Analytics - Vercel Analytics integration
+- Schema Markup - Structured data
 
 ---
 
-## 📊 Performance & SEO
+## Testing
 
-### **Optimizations**
-- ⚡ **Next.js App Router** - Server-side rendering
-- 🖼️ **Image Optimization** - Next.js Image component
-- 📦 **Code Splitting** - Automatic bundle optimization
-- 🗜️ **Compression** - Gzip/Brotli compression
-- 🎯 **Lazy Loading** - Components and images
-- 📱 **PWA Ready** - Service worker support
-
-### **SEO Features**
-- 🔍 **Meta Tags** - Dynamic meta descriptions
-- 📄 **Sitemap** - Auto-generated sitemap
-- 🤖 **Robots.txt** - Search engine directives
-- 📊 **Analytics** - Google Analytics integration
-- 🏷️ **Schema Markup** - Structured data
-
----
-
-## 🧪 Testing
-
-### **Run Tests**
+### Run Tests
 ```bash
 # Type checking
 npm run type-check
@@ -288,7 +271,7 @@ npm run build
 npm run start
 ```
 
-### **Manual Testing Checklist**
+### Manual Testing Checklist
 - [ ] All pages load correctly
 - [ ] Authentication flows work
 - [ ] Forms submit successfully
@@ -300,7 +283,7 @@ npm run start
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create feature branch (`git checkout -b feature/amazing-feature`)
@@ -308,7 +291,7 @@ npm run start
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open Pull Request
 
-### **Development Guidelines**
+### Development Guidelines
 - Follow TypeScript best practices
 - Use Tailwind CSS for styling
 - Write meaningful commit messages
@@ -317,20 +300,19 @@ npm run start
 
 ---
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🆘 Support
+## Support
 
-### **Getting Help**
-- 📖 Check [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
-- 🐛 [Report Issues](https://github.com/yourusername/gurukul-nextjs/issues)
-- 💬 [Discussions](https://github.com/yourusername/gurukul-nextjs/discussions)
+### Getting Help
+- Check [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
+- [Report Issues](https://github.com/LAN-SHLOK/Gurukul-Classes/issues)
 
-### **Common Issues**
+### Common Issues
 - **Build Errors:** Clear `.next` and `node_modules`, reinstall
 - **Environment Variables:** Restart after adding new variables
 - **Database Connection:** Check MongoDB Atlas IP whitelist
@@ -338,7 +320,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Next.js Team** - Amazing React framework
 - **Vercel** - Excellent deployment platform
@@ -348,9 +330,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📈 Roadmap
+## Roadmap
 
-### **Upcoming Features**
+### Upcoming Features
 - [ ] Mobile app (React Native)
 - [ ] Video conferencing integration
 - [ ] Advanced analytics dashboard
@@ -364,10 +346,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Made with ❤️ for Gurukul Classes**
+**Made for Gurukul Classes**
 
 *Empowering students to achieve their dreams since 2011*
 
-[⭐ Star this repo](https://github.com/yourusername/gurukul-nextjs) • [🍴 Fork it](https://github.com/yourusername/gurukul-nextjs/fork) • [📢 Share it](https://twitter.com/intent/tweet?text=Check%20out%20this%20amazing%20educational%20platform!)
+[Star this repo](https://github.com/LAN-SHLOK/Gurukul-Classes) • [Fork it](https://github.com/LAN-SHLOK/Gurukul-Classes/fork)
 
 </div>

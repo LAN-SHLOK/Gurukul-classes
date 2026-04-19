@@ -18,8 +18,15 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
 import ImageUpload from "@/components/admin/ImageUpload";
+import FileUpload from "@/components/admin/FileUpload";
 import { LenisContext as LenisCtx } from "@/components/layout/SmoothScrollProvider";
 import { useSocket } from "@/hooks/useSocket";
+import { 
+  adminFacultySchema, 
+  adminEventSchema, 
+  adminTopperSchema, 
+  adminNoteSchema 
+} from "@/lib/validations";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -327,10 +334,30 @@ function ContentModal({ open, onClose, subTab, onSuccess }: {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let body: Record<string, unknown>;
-    if (subTab === "faculty") { if (!faculty.image) { alert("Upload a photo"); return; } body = faculty; }
-    else if (subTab === "events") { if (!event.image) { alert("Upload a banner"); return; } body = event; }
-    else if (subTab === "toppers") { if (!topper.image) { alert("Upload a portrait"); return; } body = topper; }
-    else { if (!note.file_url) { alert("Provide a file URL"); return; } body = note; }
+    
+    try {
+      if (subTab === "faculty") {
+        adminFacultySchema.parse(faculty);
+        body = faculty;
+      } else if (subTab === "events") {
+        adminEventSchema.parse(event);
+        body = event;
+      } else if (subTab === "toppers") {
+        adminTopperSchema.parse(topper);
+        body = topper;
+      } else {
+        adminNoteSchema.parse(note);
+        body = note;
+      }
+    } catch (err: any) {
+      if (err.errors) {
+        alert(err.errors[0].message);
+      } else {
+        alert("Validation error");
+      }
+      return;
+    }
+
     setLoading(true);
     try {
       const endpoint = subTab === "notes" ? "/api/admin/notes" : `/api/admin/${subTab}`;
@@ -408,7 +435,14 @@ function ContentModal({ open, onClose, subTab, onSuccess }: {
                     </select>
                   </Field>
                 </div>
-                <Field label="File URL *"><input required type="url" placeholder="https://..." value={note.file_url} onChange={e => setNote(p => ({ ...p, file_url: e.target.value }))} className={inputCls} /></Field>
+                <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-4">
+                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/50 mb-3">Upload Attachment (PDF/DOC) *</p>
+                  <FileUpload 
+                    value={note.file_url} 
+                    onUpload={url => setNote(p => ({ ...p, file_url: url }))}
+                    label="UPLOAD NOTE"
+                  />
+                </div>
               </>)}
             </form>
           </div>

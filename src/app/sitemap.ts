@@ -4,7 +4,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL
   ? `https://${process.env.NEXT_PUBLIC_SITE_URL}` 
   : process.env.VERCEL_URL 
     ? `https://${process.env.VERCEL_URL}` 
-    : "https://gurukulclasses.in";
+    : "https://gurukul-classes-bice.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

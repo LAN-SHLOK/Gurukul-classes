@@ -38,7 +38,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: user._id.toString(),
           email: user.email,
           name: `${user.first_name} ${user.last_name}`,
-          image: user.image
+          image: user.image,
+          role: "student",
+          feeStatus: user.feeStatus || "pending",
         }
       }
     })
@@ -68,12 +70,36 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return true
     },
     async jwt({ token, user }) {
-      if (user) token.id = user.id
-      return token
+      if (user) {
+        token.id = user.id;
+        // @ts-ignore
+        token.role = user.role || "student";
+        // @ts-ignore
+        token.feeStatus = user.feeStatus || "pending";
+      } else if (token.email) {
+        // Refresh feeStatus on every JWT verification to ensure UI is up-to-date
+        try {
+          await connectDB();
+          const s = await Student.findOne({ email: token.email }).select("feeStatus").lean();
+          if (s) {
+            // @ts-ignore
+            token.feeStatus = s.feeStatus;
+            // @ts-ignore
+            token.role = "student";
+          }
+        } catch {}
+      }
+      return token;
     },
     async session({ session, token }) {
-      if (session.user) session.user.id = token.id as string
-      return session
+      if (session.user) {
+        session.user.id = token.id as string;
+        // @ts-ignore
+        session.user.role = token.role as string;
+        // @ts-ignore
+        session.user.feeStatus = token.feeStatus as string;
+      }
+      return session;
     }
   },
   pages: {

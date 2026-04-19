@@ -9,73 +9,65 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { facultyJoinSchema } from "@/lib/validations";
+import * as z from "zod";
+import { cn } from "@/lib/utils";
+
+type FacultyValues = z.infer<typeof facultyJoinSchema>;
+
 export default function JoinFacultyPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    position: "",
-    experience: "",
-    qualification: "",
-    subjects: "",
-    message: "",
-    resume: null as File | null,
-  });
-  const [loading, setLoading] = useState(false);
+  const [resume, setResume] = useState<File | null>(null);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<FacultyValues>({
+    resolver: zodResolver(facultyJoinSchema),
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFormData(prev => ({ ...prev, resume: e.target.files![0] }));
+      setResume(e.target.files[0]);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const onSubmit = async (data: FacultyValues) => {
     setError("");
-
     try {
       const formDataToSend = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        if (value !== null) {
-          formDataToSend.append(key, value);
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formDataToSend.append(key, value as string);
         }
       });
+      if (resume) {
+        formDataToSend.append("resume", resume);
+      }
 
       const response = await fetch("/api/join-faculty", {
         method: "POST",
         body: formDataToSend,
       });
 
-      const data = await response.json();
+      const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to submit application");
+        throw new Error(result.error || "Failed to submit application");
       }
 
       setSuccess(true);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        position: "",
-        experience: "",
-        qualification: "",
-        subjects: "",
-        message: "",
-        resume: null,
-      });
+      reset();
+      setResume(null);
     } catch (err: any) {
       setError(err.message || "Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -220,24 +212,22 @@ export default function JoinFacultyPage() {
               </button>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Personal Information */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-white/60 mb-2">
                     Full Name *
                   </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm"
-                      placeholder="Enter your full name"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    {...register("name")}
+                    className={cn(
+                      "w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm",
+                      errors.name && "border-red-500/50"
+                    )}
+                    placeholder="Enter your full name"
+                  />
+                  {errors.name && <p className="text-[10px] text-red-400 font-bold mt-1 ml-1">{errors.name.message}</p>}
                 </div>
 
                 <div>
@@ -248,14 +238,15 @@ export default function JoinFacultyPage() {
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
                     <input
                       type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm"
+                      {...register("email")}
+                      className={cn(
+                        "w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm",
+                        errors.email && "border-red-500/50"
+                      )}
                       placeholder="your.email@example.com"
                     />
                   </div>
+                  {errors.email && <p className="text-[10px] text-red-400 font-bold mt-1 ml-1">{errors.email.message}</p>}
                 </div>
 
                 <div>
@@ -266,14 +257,15 @@ export default function JoinFacultyPage() {
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
                     <input
                       type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm"
-                      placeholder="+91 XXXXX XXXXX"
+                      {...register("phone")}
+                      className={cn(
+                        "w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm",
+                        errors.phone && "border-red-500/50"
+                      )}
+                      placeholder="10-digit mobile number"
                     />
                   </div>
+                  {errors.phone && <p className="text-[10px] text-red-400 font-bold mt-1 ml-1">{errors.phone.message}</p>}
                 </div>
 
                 <div>
@@ -281,11 +273,11 @@ export default function JoinFacultyPage() {
                     Position Applied For *
                   </label>
                   <select
-                    name="position"
-                    value={formData.position}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#2D31FA] focus:outline-none transition-colors text-sm"
+                    {...register("position")}
+                    className={cn(
+                      "w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-[#2D31FA] focus:outline-none transition-colors text-sm appearance-none",
+                      errors.position && "border-red-500/50"
+                    )}
                   >
                     <option value="" className="bg-black">Select position</option>
                     <option value="JEE Faculty" className="bg-black">JEE Faculty</option>
@@ -296,10 +288,10 @@ export default function JoinFacultyPage() {
                     <option value="Administrative Staff" className="bg-black">Administrative Staff</option>
                     <option value="Other" className="bg-black">Other</option>
                   </select>
+                  {errors.position && <p className="text-[10px] text-red-400 font-bold mt-1 ml-1">{errors.position.message}</p>}
                 </div>
               </div>
 
-              {/* Professional Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-white/60 mb-2">
@@ -309,14 +301,15 @@ export default function JoinFacultyPage() {
                     <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
                     <input
                       type="text"
-                      name="experience"
-                      value={formData.experience}
-                      onChange={handleChange}
-                      required
-                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm"
-                      placeholder="e.g., 5 years"
+                      {...register("experience")}
+                      className={cn(
+                        "w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm",
+                        errors.experience && "border-red-500/50"
+                      )}
+                      placeholder="e.g., 5"
                     />
                   </div>
+                  {errors.experience && <p className="text-[10px] text-red-400 font-bold mt-1 ml-1">{errors.experience.message}</p>}
                 </div>
 
                 <div>
@@ -327,14 +320,15 @@ export default function JoinFacultyPage() {
                     <Award className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
                     <input
                       type="text"
-                      name="qualification"
-                      value={formData.qualification}
-                      onChange={handleChange}
-                      required
-                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm"
-                      placeholder="e.g., M.Sc. Physics, B.Tech IIT"
+                      {...register("qualification")}
+                      className={cn(
+                        "w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm",
+                        errors.qualification && "border-red-500/50"
+                      )}
+                      placeholder="e.g., M.Sc. Physics"
                     />
                   </div>
+                  {errors.qualification && <p className="text-[10px] text-red-400 font-bold mt-1 ml-1">{errors.qualification.message}</p>}
                 </div>
               </div>
 
@@ -344,13 +338,14 @@ export default function JoinFacultyPage() {
                 </label>
                 <input
                   type="text"
-                  name="subjects"
-                  value={formData.subjects}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm"
-                  placeholder="e.g., Physics, Chemistry, Mathematics"
+                  {...register("subjects")}
+                  className={cn(
+                    "w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm",
+                    errors.subjects && "border-red-500/50"
+                  )}
+                  placeholder="e.g., Physics, Chemistry"
                 />
+                {errors.subjects && <p className="text-[10px] text-red-400 font-bold mt-1 ml-1">{errors.subjects.message}</p>}
               </div>
 
               <div>
@@ -358,12 +353,10 @@ export default function JoinFacultyPage() {
                   Why do you want to join us?
                 </label>
                 <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
+                  {...register("message")}
                   rows={4}
                   className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#2D31FA] focus:outline-none transition-colors text-sm resize-none"
-                  placeholder="Tell us about your passion for teaching and why you'd be a great fit..."
+                  placeholder="Tell us about your passion for teaching..."
                 />
               </div>
 
@@ -385,24 +378,24 @@ export default function JoinFacultyPage() {
                   >
                     <Upload className="w-5 h-5" />
                     <span className="text-sm font-medium">
-                      {formData.resume ? formData.resume.name : "Click to upload your resume"}
+                      {resume ? resume.name : "Click to upload your resume"}
                     </span>
                   </label>
                 </div>
               </div>
 
               {error && (
-                <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-bold uppercase tracking-widest">
                   {error}
                 </div>
               )}
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isSubmitting}
                 className="press w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-[#2D31FA] text-white text-xs font-black uppercase tracking-[0.2em] shadow-[0_0_50px_-10px_rgba(45,49,250,0.8)] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
-                {loading ? (
+                {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
                     Submitting...

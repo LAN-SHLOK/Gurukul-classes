@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Users } from "lucide-react";
 
 export default function LivePresence() {
-  const { socket, isConnected } = useSocket();
+  const { isConnected, on, off } = useSocket();
   const [count, setCount] = useState(1);
   const [show, setShow] = useState(false);
 
@@ -17,14 +17,10 @@ export default function LivePresence() {
   }, []);
 
   useEffect(() => {
-    if (!socket) return;
-
-    // Server emits 'presence' with current viewer count
-    socket.on("presence", (n: number) => setCount(n));
-    socket.emit("presence:join");
-
-    return () => { socket.off("presence"); };
-  }, [socket]);
+    const handler = (n: number) => setCount(n);
+    on("presence", handler);
+    return () => off("presence", handler);
+  }, [on, off]);
 
   return (
     <AnimatePresence>

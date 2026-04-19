@@ -13,18 +13,7 @@ import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
 import { signIn } from "next-auth/react";
 
-const registerSchema = z.object({
-  firstName: z.string().min(2, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  mobile: z.string().min(10, "Valid mobile number is required"),
-  gender: z.string().min(1, "Please select gender"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Please confirm your password"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+import { registerSchema } from "@/lib/validations";
 
 type RegisterValues = z.infer<typeof registerSchema>;
 
