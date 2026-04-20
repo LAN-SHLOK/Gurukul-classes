@@ -69,16 +69,18 @@ function BigHeading({ children, className, style }: { children: React.ReactNode;
 
 // ─── GLASSMORPHIC CARD ────────────────────────────────────────────────────────
 function GlassCard({
-  children, className, onClick, style
+  children, className, onClick, style, ...props
 }: {
-  children: React.ReactNode; className?: string; onClick?: () => void; style?: React.CSSProperties;
+  children: React.ReactNode; className?: string; onClick?: () => void; style?: React.CSSProperties; [key: string]: any;
 }) {
   return (
-    <div
+    <motion.div
       onClick={onClick}
+      whileHover={{ y: -5, boxShadow: "0 0 30px -5px rgba(45,49,250,0.3)" }}
+      whileTap={{ scale: 0.98 }}
       className={cn(
         "relative rounded-3xl border border-white/10 overflow-hidden",
-        "backdrop-blur-xl",
+        "backdrop-blur-xl transition-colors duration-500",
         onClick && "cursor-pointer press micro-glow",
         className
       )}
@@ -86,9 +88,10 @@ function GlassCard({
         background: "rgba(255,255,255,0.04)",
         ...style
       }}
+      {...props}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 
@@ -115,6 +118,8 @@ function NeuStat({ value, label, delay }: { value: string; label: string; delay:
     <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.93 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{ y: -5, scale: 1.02 }}
+      whileTap={{ scale: 0.95 }}
       viewport={{ once: true }}
       transition={{ delay, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       className="neuro-card-dark rounded-[24px] p-5 text-center relative overflow-hidden press micro-glow"
@@ -136,19 +141,8 @@ function NeuStat({ value, label, delay }: { value: string; label: string; delay:
 }
 
 // ─── REAL-TIME VIEWER BADGE ───────────────────────────────────────────────────
-function ViewerBadge({ count }: { count: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 2.5 }}
-      className="glass-pill flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-wider text-white/60"
-    >
-      <span className="presence-dot" style={{ width: 6, height: 6 }} />
-      {count} viewer{count !== 1 ? "s" : ""} now
-    </motion.div>
-  );
-}
+// Removed as requested
+
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // SECTION 1 — HERO
@@ -429,12 +423,16 @@ function CoursesSection() {
                 <p className="text-sm text-white/40 font-medium leading-relaxed flex-1">{c.desc}</p>
 
                 <Link href="/courses">
-                  <div className="flex items-center gap-2 press group-hover:gap-3 transition-all">
+                  <motion.div 
+                    whileHover={{ gap: "0.75rem" }}
+                    whileTap={{ gap: "0.75rem" }}
+                    className="flex items-center gap-2 press transition-all"
+                  >
                     <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: c.color }}>
                       Explore
                     </span>
                     <ArrowRight className="w-3.5 h-3.5" style={{ color: c.color }} />
-                  </div>
+                  </motion.div>
                 </Link>
               </GlassCard>
             </Reveal>
@@ -444,14 +442,24 @@ function CoursesSection() {
         {/* CTA strip */}
         <Reveal delay={0.3} className="mt-6">
           <Link href="/admissions">
-            <div className="press flex items-center justify-between px-6 py-5 rounded-2xl border border-[#2D31FA]/20 bg-[#2D31FA]/05 hover:bg-[#2D31FA]/10 transition-colors group">
+            <motion.div 
+              whileHover={{ scale: 1.01, backgroundColor: "rgba(45,49,250,0.1)" }}
+              whileTap={{ scale: 0.98 }}
+              className="press flex items-center justify-between px-6 py-5 rounded-2xl border border-[#2D31FA]/20 bg-[#2D31FA]/05 transition-colors group"
+            >
               <span className="text-sm font-black text-white uppercase tracking-tight">
                 Ready to join? Apply for admission →
               </span>
-              <div className="w-9 h-9 rounded-full bg-[#2D31FA] flex items-center justify-center group-hover:rotate-45 transition-transform">
+              <motion.div 
+                variants={{
+                  hover: { rotate: 45 },
+                  tap: { rotate: 45 }
+                }}
+                className="w-9 h-9 rounded-full bg-[#2D31FA] flex items-center justify-center transition-transform"
+              >
                 <ArrowRight className="w-4 h-4 text-white" />
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </Link>
         </Reveal>
       </div>
@@ -822,7 +830,10 @@ function FacultySection() {
               transition={{ delay: i * 0.05 }}
               className="flex-shrink-0 w-52"
             >
-              <div className="neuro-light rounded-[20px] overflow-hidden press">
+              <motion.div 
+                whileTap={{ scale: 0.96 }}
+                className="neuro-light rounded-[20px] overflow-hidden press"
+              >
                 <div className="relative h-44 overflow-hidden">
                   <img src={m.image} alt={m.name} className="w-full h-full object-cover grayscale-[30%]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
@@ -840,7 +851,7 @@ function FacultySection() {
                   <p className="text-[8px] font-black uppercase tracking-[0.15em] text-[#2D31FA] truncate">{m.role}</p>
                   <p className="text-[9px] text-black/40 font-medium truncate">{m.expertise}</p>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           ))}
           {/* View All CTA — inline in scroll, no overflow */}
@@ -1154,7 +1165,8 @@ function ReviewsSection() {
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -40, scale: 0.96 }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="bg-white rounded-[28px] md:rounded-[40px] p-7 md:p-12 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] border border-black/5"
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-white rounded-[28px] md:rounded-[40px] p-7 md:p-12 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.12)] border border-black/5 transition-all duration-500"
                 >
                   <p className="text-lg md:text-2xl font-black text-black tracking-tight leading-snug mb-8">
                     &quot;{r.text}&quot;
@@ -1245,10 +1257,22 @@ function CTASection() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/admissions">
-                  <button className="press w-full sm:w-auto group flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-[#2D31FA] text-white text-xs font-black uppercase tracking-[0.2em] shadow-[0_0_50px_-10px_rgba(45,49,250,0.8)] active:scale-95 transition-all micro-glow">
+                  <motion.button 
+                    whileHover="hover"
+                    whileTap="tap"
+                    className="press w-full sm:w-auto group flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-[#2D31FA] text-white text-xs font-black uppercase tracking-[0.2em] shadow-[0_0_50px_-10px_rgba(45,49,250,0.8)] active:scale-95 transition-all micro-glow"
+                  >
                     Apply Now
-                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
+                    <motion.div
+                      variants={{
+                        hover: { x: 5 },
+                        tap: { x: 5 }
+                      }}
+                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </motion.div>
+                  </motion.button>
                 </Link>
                 <Link href="/contact">
                   <button className="press w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-2xl glass-pill text-white/70 text-xs font-black uppercase tracking-[0.2em] active:scale-95 transition-all">
@@ -1269,22 +1293,9 @@ function CTASection() {
 // ═══════════════════════════════════════════════════════════════════════════════
 export default function HomePage() {
   const { } = useSocket();
-  const [viewers, setViewers] = useState(1);
-
-  // Simulate viewer count with small variance for real-time feel
-  useEffect(() => {
-    const t = setInterval(() => {
-      setViewers(v => Math.max(1, v + (Math.random() > 0.5 ? 1 : -1) * (Math.random() > 0.7 ? 1 : 0)));
-    }, 8000);
-    return () => clearInterval(t);
-  }, []);
 
   return (
     <div className="overflow-x-hidden">
-      {/* Real-time viewer badge — fixed bottom left */}
-      <div className="fixed bottom-20 md:bottom-6 left-4 z-50 md:left-6">
-        <ViewerBadge count={viewers} />
-      </div>
 
       <HeroSection />
       <StatsSection />

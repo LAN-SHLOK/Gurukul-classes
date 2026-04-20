@@ -133,10 +133,16 @@
 
 /* ── Neumorphism (light surfaces) ─────────────────────────────── */
 .neuro-light {
-  background: #f0eee8;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.03);
   box-shadow:
-    6px 6px 12px rgba(0,0,0,0.12),
-    -6px -6px 12px rgba(255,255,255,0.9);
+    0 4px 6px -1px rgba(0,0,0,0.05),
+    0 2px 4px -1px rgba(0,0,0,0.03);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.neuro-light:hover, .neuro-light:active {
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,0.1);
+  border-color: rgba(45,49,250,0.1);
 }
 .neuro-light-inset {
   background: #f0eee8;
@@ -291,7 +297,7 @@
 .micro-glow {
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-.micro-glow:hover {
+.micro-glow:hover, .micro-glow:active {
   box-shadow: 0 0 24px -4px rgba(45,49,250,0.5);
   transform: translateY(-2px);
 }
@@ -303,17 +309,31 @@
     6px 6px 16px rgba(0,0,0,0.7),
     -4px -4px 12px rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.04);
+  transition: all 0.3s ease;
+}
+.neuro-card-dark:hover, .neuro-card-dark:active {
+  transform: translateY(-4px);
+  box-shadow:
+    8px 8px 20px rgba(0,0,0,0.8),
+    -4px -4px 12px rgba(255,255,255,0.06);
 }
 .neuro-btn {
   background: #111118;
   box-shadow:
     4px 4px 10px rgba(0,0,0,0.6),
     -2px -2px 6px rgba(255,255,255,0.04);
+  transition: all 0.2s ease;
+}
+.neuro-btn:hover, .neuro-btn:active {
+  box-shadow:
+    6px 6px 12px rgba(0,0,0,0.7),
+    -2px -2px 6px rgba(255,255,255,0.06);
 }
 .neuro-btn:active {
   box-shadow:
     inset 3px 3px 8px rgba(0,0,0,0.6),
     inset -2px -2px 5px rgba(255,255,255,0.03);
+  transform: scale(0.98);
 }
 
 /* ── GLASSMORPHIC MOBILE ────────────────────────────────────────── */
@@ -478,4 +498,3 @@ select::-webkit-scrollbar-thumb:hover {
   font-family: monospace;
   font-size: 0.85em;
 }
-

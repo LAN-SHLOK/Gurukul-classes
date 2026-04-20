@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { GraduationCap, Target, Sparkles, BookOpen, Trophy } from "lucide-react";
+import { GraduationCap, Target, Sparkles, BookOpen, Trophy, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { annotate } from "rough-notation";
 import VivusSVG from "@/components/ui/VivusSVG";
@@ -94,7 +94,7 @@ export default function AboutPage() {
         </div>
 
         {/* Vivus SVG divider */}
-        <VivusSVG className="mb-16 opacity-20">
+        <VivusSVG className="mb-16 opacity-40">
           <svg width="100%" height="24" viewBox="0 0 800 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 12 Q200 0 400 12 Q600 24 800 12" stroke="#2D31FA" strokeWidth="2" fill="none" strokeLinecap="round"/>
           </svg>
@@ -107,12 +107,17 @@ export default function AboutPage() {
               key={stat.label}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5, boxShadow: "0 20px 40px -20px rgba(45,49,250,0.15)" }}
+              whileTap={{ scale: 0.96 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-white rounded-[32px] md:rounded-[40px] p-6 md:p-10 text-center shadow-sm hover:shadow-xl transition-shadow duration-500"
+              className="relative bg-white rounded-[32px] md:rounded-[40px] p-6 md:p-10 text-center border border-black/5 overflow-hidden group"
             >
-              <p className="text-3xl md:text-5xl font-black text-[#2D31FA] tracking-tighter">{stat.value}</p>
-              <p className="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mt-2">{stat.label}</p>
+              {/* Accent indicator */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-[#2D31FA]/10 group-hover:bg-[#2D31FA] transition-colors duration-500 rounded-b-full" />
+              
+              <p className="text-3xl md:text-5xl font-black text-[#2D31FA] tracking-tighter leading-none">{stat.value}</p>
+              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-black/30 mt-3">{stat.label}</p>
             </motion.div>
           ))}
         </div>
@@ -173,7 +178,7 @@ export default function AboutPage() {
         </div>
 
         {/* Why us */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
           {[
             { icon: GraduationCap, title: "Scholars", text: "Batches led by IITians and career specialists." },
             { icon: BookOpen,      title: "Vault",    text: "Proprietary research-backed study ecosystem." },
@@ -183,15 +188,29 @@ export default function AboutPage() {
               key={i}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -8, boxShadow: "0 30px 60px -20px rgba(0,0,0,0.1)" }}
+              whileTap={{ scale: 0.97 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="p-8 md:p-12 bg-white rounded-[40px] md:rounded-[50px] shadow-sm hover:shadow-2xl transition-all duration-700 group cursor-default"
+              className="p-8 md:p-12 bg-white rounded-[48px] md:rounded-[50px] border border-black/[0.03] transition-all duration-700 group relative overflow-hidden"
             >
-              <div className="w-16 h-16 bg-[#F2F2F2] rounded-2xl flex items-center justify-center mb-10 group-hover:bg-[#2D31FA] group-hover:text-white transition-all duration-500">
-                <item.icon className="w-8 h-8" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#2D31FA]/05 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              
+              <div className="w-14 h-14 md:w-16 md:h-16 bg-[#2D31FA]/10 rounded-[22px] flex items-center justify-center mb-8 md:mb-10 group-hover:bg-[#2D31FA] group-hover:text-white group-hover:shadow-[0_10px_30px_-10px_rgba(45,49,250,0.5)] transition-all duration-500 relative z-10">
+                <item.icon className="w-6 h-6 md:w-8 md:h-8 text-[#2D31FA] group-hover:text-white transition-colors duration-500" />
               </div>
-              <h4 className="text-2xl font-black uppercase tracking-tighter mb-4">{item.title}</h4>
-              <p className="text-gray-400 font-bold leading-tight">{item.text}</p>
+              
+              <h4 className="text-2xl font-black uppercase tracking-tighter mb-3 relative z-10">{item.title}</h4>
+              <p className="text-sm md:text-base text-black/40 font-bold leading-snug relative z-10">
+                {item.text}
+              </p>
+              
+              <div className="mt-8 flex items-center gap-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-2 transition-all duration-500">
+                <span className="text-[10px] font-black uppercase tracking-widest text-[#2D31FA]">Learn More</span>
+                <div className="w-5 h-5 rounded-full bg-[#2D31FA]/10 flex items-center justify-center">
+                   <ChevronRight className="w-3 h-3 text-[#2D31FA]" />
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>

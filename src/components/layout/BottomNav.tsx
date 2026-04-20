@@ -28,7 +28,7 @@ export default function BottomNav() {
         initial={{ y: 80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-        className="glass-pill flex items-center gap-1 px-3 py-2 rounded-[28px] shadow-[0_8px_40px_-8px_rgba(0,0,0,0.8)] mx-4"
+        className="flex items-center gap-1 px-3 py-2 rounded-[28px] shadow-[0_8px_40px_-8px_rgba(0,0,0,0.8)] mx-4 bg-black/90 backdrop-blur-2xl border border-white/20"
         style={{ maxWidth: 360, width: "calc(100% - 2rem)" }}
       >
         {BOTTOM_LINKS.map((link, i) => {

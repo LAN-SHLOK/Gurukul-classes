@@ -11,10 +11,10 @@ import NavigationSwipe from "@/components/ui/NavigationSwipe";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import BottomNav from "@/components/layout/BottomNav";
 import LoadingScreen from "@/components/ui/LoadingScreen";
-import LivePresence from "@/components/ui/LivePresence";
 import PWARegister from "@/components/ui/PWARegister";
 import AnnouncementBanner from "@/components/ui/AnnouncementBanner";
 import SocketStatusIndicator from "@/components/ui/SocketStatusIndicator";
+import ScrollToTop from "@/components/ui/ScrollToTop";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -79,13 +79,13 @@ export default function RootLayout({
             <GrainTexture />
             <BlobCursor />
             <ScrollProgress />
-            <LivePresence />
             <Header />
             <main className="relative z-10 pb-[72px] md:pb-0 bg-black">{children}</main>
             <div className="relative z-10 bg-black">
               <Footer />
             </div>
             <BottomNav />
+            <ScrollToTop />
           </SmoothScrollProvider>
         </SessionProvider>
       </body>
