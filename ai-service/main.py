@@ -143,9 +143,9 @@ async def academic_mentor(req: QueryRequest):
     mentor_prompt = build_system_prompt(ctx)
 
     try:
-        # Hard-locked to 8B for < 2s response times
+        # Using Groq's current active model for fast responses
         completion = groq_client.chat.completions.create(
-            model="mixtral-8x7b-32768",
+            model="openai/gpt-oss-20b",
             messages=[
                 {"role": "system", "content": mentor_prompt},
                 {"role": "user",   "content": f"Student Question: {query}\n\nProvide an elite, mentor-level explanation:"},
@@ -187,7 +187,7 @@ STYLE: Formal, exhaustive, and instructional."""
 
     try:
         completion = groq_client.chat.completions.create(
-            model="mixtral-8x7b-32768",
+            model="openai/gpt-oss-120b",
             response_format={"type": "json_object"},
             messages=[
                 {"role": "system", "content": architect_prompt},
