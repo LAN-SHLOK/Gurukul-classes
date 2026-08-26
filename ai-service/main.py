@@ -187,7 +187,7 @@ STYLE: Formal, exhaustive, and instructional."""
 
     try:
         completion = groq_client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model=" model="llama3-8b-8192"",
             response_format={"type": "json_object"},
             messages=[
                 {"role": "system", "content": architect_prompt},
