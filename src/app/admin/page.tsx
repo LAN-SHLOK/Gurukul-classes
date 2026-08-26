@@ -1,4 +1,4 @@
-"use client";
+="use client";
 
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { createPortal } from "react-dom";
@@ -68,6 +68,17 @@ interface ContentItem {
   image?: string;
   file_url?: string;
 }
+
+interface InquiryDoc {
+  _id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  class_name: string;
+  message?: string;
+  created_at: string;
+}
+
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const inputCls = "w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder:text-white/20 focus:border-[#2D31FA]/60 outline-none px-4 text-sm font-medium transition-all";
@@ -784,7 +795,7 @@ function StudentDetailSheet({ student, schedules, onClose, onSave }: {
 
 // ─── Home Section ─────────────────────────────────────────────────────────────
 function HomeSection({ students, schedules, inquiries }: {
-  students: StudentDoc[]; schedules: Schedule[]; inquiries: unknown[];
+  students: StudentDoc[]; schedules: Schedule[]; inquiries: InquiryDoc[];
 }) {
   const [announcement, setAnnouncement] = useState<{ _id: string; text: string } | null>(null);
   const [annText, setAnnText] = useState("");
@@ -834,7 +845,7 @@ function HomeSection({ students, schedules, inquiries }: {
   const months  = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const monthlyCounts = new Array(12).fill(0);
   const yr = new Date().getFullYear();
-  (inquiries as Array<{ created_at?: string }>).forEach(inq => {
+  inquiries.forEach(inq => {
     if (!inq.created_at) return;
     const d = new Date(inq.created_at);
     if (d.getFullYear() === yr) monthlyCounts[d.getMonth()]++;
@@ -897,6 +908,46 @@ function HomeSection({ students, schedules, inquiries }: {
               className="px-4 h-12 rounded-xl bg-[#2D31FA] text-white text-xs font-black uppercase tracking-widest hover:bg-blue-500 disabled:opacity-40 transition-all">
               Post
             </button>
+          </div>
+        )}
+      </div>
+
+      <div className="neuro-card-dark rounded-2xl p-4 space-y-4">
+        <div className="flex items-center gap-2 mb-2">
+          <BookOpen className="w-4 h-4 text-[#2D31FA]" />
+          <span className="text-[9px] font-black uppercase tracking-widest text-[#2D31FA]">Recent Inquiries</span>
+        </div>
+        
+        {inquiries.length === 0 ? (
+          <p className="text-white/40 text-sm italic text-center py-4">No inquiries yet.</p>
+        ) : (
+          <div className="space-y-3">
+            {inquiries.slice(0, 10).map((inq) => (
+              <div key={inq._id} className="bg-white/[0.02] border border-white/5 rounded-xl p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <p className="text-white font-bold text-sm">{inq.first_name} {inq.last_name}</p>
+                    <a href={`mailto:${inq.email}`} className="text-[#2D31FA] text-xs font-medium hover:underline">
+                      {inq.email}
+                    </a>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] text-white/40 uppercase tracking-wider font-bold">
+                      {new Date(inq.created_at).toLocaleDateString()}
+                    </span>
+                    <p className="text-white/60 text-xs font-medium mt-1">Class: {inq.class_name}</p>
+                  </div>
+                </div>
+                {inq.message && (
+                  <div className="mt-3 bg-white/[0.04] rounded-lg p-3">
+                    <p className="text-white/80 text-sm whitespace-pre-wrap">{inq.message}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+            {inquiries.length > 10 && (
+              <p className="text-center text-white/30 text-xs italic pt-2">Showing 10 most recent inquiries</p>
+            )}
           </div>
         )}
       </div>
