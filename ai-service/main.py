@@ -145,7 +145,7 @@ async def academic_mentor(req: QueryRequest):
     try:
         # Hard-locked to 8B for < 2s response times
         completion = groq_client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="mixtral-8x7b-32768",
             messages=[
                 {"role": "system", "content": mentor_prompt},
                 {"role": "user",   "content": f"Student Question: {query}\n\nProvide an elite, mentor-level explanation:"},
@@ -187,7 +187,7 @@ STYLE: Formal, exhaustive, and instructional."""
 
     try:
         completion = groq_client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="mixtral-8x7b-32768",
             response_format={"type": "json_object"},
             messages=[
                 {"role": "system", "content": architect_prompt},
